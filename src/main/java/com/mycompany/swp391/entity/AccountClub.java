@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.swp391.entity;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,8 +19,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CategoryClub {
+public class AccountClub {
     private Integer id;
-    private String name;
-    private String description;
+    private Integer account_id;
+    private Integer club_id;
+    private String role;
 }
