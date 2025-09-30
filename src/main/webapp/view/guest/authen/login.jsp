@@ -78,7 +78,7 @@
     .input-group { position: relative; width: 100%; margin-bottom: 18px; }
     .input-group i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #F85719; font-size: 16px; }
     .input-group input {
-      width: 100%; padding: 14px 44px 14px 44px; border-radius: 12px;
+      width: 100%; padding: 14px 52px 14px 44px; border-radius: 12px;
       border: 1px solid #e3e6f0; outline: none;
       font-size: 15px; background: #fff;
       transition: all 0.25s ease;
@@ -88,7 +88,8 @@
 
     .toggle-password {
       position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-      border: none; background: transparent; color: #F85719; cursor: pointer; padding: 6px; border-radius: 8px;
+      border: none; background: transparent; color: #F85719; cursor: pointer; padding: 0; border-radius: 8px;
+      width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;
     }
     .toggle-password:hover { color: #E04F17; background: rgba(248,87,25,0.10); }
 
@@ -108,6 +109,9 @@
 
     .error-alert { margin-top: 16px; background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; padding: 10px 12px; border-radius: 10px; font-size: 14px; }
     .error-alert:empty { display: none; }
+
+    .success-alert { margin-top: 16px; background: #e8f5e8; color: #2e7d32; border: 1px solid #c8e6c9; padding: 10px 12px; border-radius: 10px; font-size: 14px; }
+    .success-alert:empty { display: none; }
 
     @media (max-width: 960px) {
       .container { width: 100%; grid-template-columns: 1fr; }
@@ -130,6 +134,7 @@
 <!-- Container -->
 <div class="container" id="container">
   <div class="brand-side">
+    <img class="logo" src="${pageContext.request.contextPath}/guest/assets/images/logoFPT4.png" alt="Logo">
     <h3>Chào mừng đến với cộng đồng FPTU Club</h3>
     <p>Kết nối, học hỏi và bùng nổ đam mê cùng cộng đồng.</p>
   </div>
@@ -154,6 +159,8 @@
         <button type="submit" class="btn">Đăng Nhập</button>
       </form>
       <div class="error-alert">${error}</div>
+
+      <div class="success-alert">${success}</div>
     </div>
   </div>
 </div>

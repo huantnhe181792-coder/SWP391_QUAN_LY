@@ -46,7 +46,12 @@ public class LoginServlet extends HttpServlet {
       if (ac == null) {
         req.setAttribute("error", "Tài khoản không tồn tại");
         req.getRequestDispatcher("view/guest/authen/login.jsp").forward(req, resp);
-      } else if (LoginServlet.verifyPassword(password, ac.getPassword())) {
+      } else if( !ac.isConfirm()){
+        req.setAttribute("error", "Tài khoàn chưa xác thực, vui lòng kiểm tra mail để xác thực");
+        req.getRequestDispatcher("view/guest/authen/login.jsp").forward(req, resp);
+      }
+
+      else if (LoginServlet.verifyPassword(password, ac.getPassword())) {
 
         // Lấy ra danh sách accountClub theo accountId
 //        Integer accountId = ac.getId();

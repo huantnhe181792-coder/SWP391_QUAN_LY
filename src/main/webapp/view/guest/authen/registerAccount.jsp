@@ -65,6 +65,7 @@
                         radial-gradient(600px 300px at -20% 120%, rgba(255,255,255,0.08), transparent 60%);
             pointer-events: none;
         }
+        .brand-side .logo { width: 120px; height: auto; margin-bottom: 18px; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.2)); }
         .brand-side h3 { font-size: 22px; font-weight: 700; text-align: center; line-height: 1.4; margin-bottom: 10px; }
         .brand-side p { font-size: 14px; opacity: 0.9; text-align: center; }
 
@@ -78,7 +79,7 @@
         .input-group i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #F85719; font-size: 16px; }
         .input-group input,
         .input-group select {
-            width: 100%; padding: 12px 44px; border-radius: 12px;
+            width: 100%; padding: 12px 52px 12px 44px; border-radius: 12px;
             border: 1px solid #e3e6f0; outline: none;
             font-size: 15px; background: #fff;
             transition: all 0.25s ease;
@@ -89,7 +90,8 @@
 
         .toggle-password {
             position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-            border: none; background: transparent; color: #F85719; cursor: pointer; padding: 6px; border-radius: 8px;
+            border: none; background: transparent; color: #F85719; cursor: pointer; padding: 0; border-radius: 8px;
+            width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;
         }
         .toggle-password:hover { color: #E04F17; background: rgba(248,87,25,0.10); }
 
@@ -106,6 +108,10 @@
         }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(248, 87, 25, 0.35); }
         .btn:active { transform: translateY(0); box-shadow: 0 8px 16px rgba(248, 87, 25, 0.25); }
+        .btn.loading, .btn:disabled { opacity: 0.85; cursor: default; }
+        .btn.loading { position: relative; pointer-events: none; }
+        .btn.loading:after { content: ""; position: absolute; right: 14px; top: 50%; width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.5); border-top-color: #fff; transform: translateY(-50%); animation: spin .8s linear infinite; }
+        @keyframes spin { to { transform: translateY(-50%) rotate(360deg); } }
 
         .error-alert { margin-top: 16px; background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; padding: 10px 12px; border-radius: 10px; font-size: 14px; }
         .error-alert:empty { display: none; }
@@ -131,13 +137,14 @@
 <!-- Container -->
 <div class="container" id="container">
     <div class="brand-side">
+        <img class="logo" src="${pageContext.request.contextPath}/guest/assets/images/logoFPT4.png" alt="Logo">
         <h3>Tham gia cộng đồng FPTU Club</h3>
         <p>Tạo tài khoản để kết nối, đăng ký CLB và cập nhật sự kiện.</p>
     </div>
     <div class="form-side">
         <div class="form-wrapper">
             <h2>Đăng Ký</h2>
-            <form id="registerForm" method="post" action="${pageContext.request.contextPath}/registerAccount">
+            <form id="registerForm" method="post" action="${pageContext.request.contextPath}/registerAccount" onsubmit="handleRegisterSubmit(event)">
                 <div class="input-group">
                     <i class="far fa-envelope" aria-hidden="true"></i>
                     <input type="email" placeholder="Email" name="email" autocomplete="email" required>
@@ -187,7 +194,7 @@
                     <span style="color:#bdbdbd">|</span>
                     <a href="${pageContext.request.contextPath}/view/guest/authen/forgotPassword.jsp">Quên mật khẩu?</a>
                 </div>
-                <button type="submit" class="btn">Đăng Ký</button>
+                <button id="registerBtn" type="submit" class="btn">Đăng Ký</button>
             </form>
             <div class="error-alert">${error}</div>
         </div>
@@ -209,6 +216,15 @@
             });
         });
     })();
+
+    function handleRegisterSubmit(e) {
+        var btn = document.getElementById('registerBtn');
+        if (btn) {
+            btn.classList.add('loading');
+            btn.setAttribute('disabled', 'disabled');
+            btn.textContent = 'Đang xử lý...';
+        }
+    }
 </script>
 </html>
 
