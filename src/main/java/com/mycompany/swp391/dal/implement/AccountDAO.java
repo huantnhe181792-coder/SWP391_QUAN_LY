@@ -128,7 +128,7 @@ public class AccountDAO extends DBContext implements I_DAO<Account> {
     int generatedId = -1;
     try {
       connection = getConnection();
-      String sql = "INSERT INTO account (email, password, fullname, phone, gender, bod, created_at, updated_at, status, address, student_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      String sql = "INSERT INTO account (email, password, fullname, phone, gender, bod, created_at, updated_at, status, address, student_id, confirmation_token, is_confirm) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
       statement = connection.prepareStatement(sql, statement.RETURN_GENERATED_KEYS);
       statement.setString(1, t.getEmail());
       statement.setString(2, t.getPassword());
@@ -143,6 +143,8 @@ public class AccountDAO extends DBContext implements I_DAO<Account> {
       statement.setString(9, t.getStatus());
       statement.setString(10, t.getAddress());
       statement.setString(11, t.getStudent_id());
+      statement.setString(12, t.getConfirmationToken());
+      statement.setBoolean(13, t.isConfirm());
 
       int affectedRows = statement.executeUpdate();
       if (affectedRows > 0) {
@@ -220,7 +222,45 @@ public class AccountDAO extends DBContext implements I_DAO<Account> {
     account.setStatus(rs.getString("status"));
     account.setAddress(rs.getString("address"));
     account.setStudent_id(rs.getString("student_id"));
+    try { account.setConfirmationToken(rs.getString("confirmation_token")); } catch (SQLException ignore) {}
+    try { account.setConfirm(rs.getBoolean("is_confirm")); } catch (SQLException ignore) {}
     return account;
+  }
+
+  public Account findByConfirmationToken(String token) {
+    Account account = null;
+    try {
+      connection = getConnection();
+      String sql = "SELECT * FROM account WHERE confirmation_token = ?";
+      statement = connection.prepareStatement(sql);
+      statement.setString(1, token);
+      resultSet = statement.executeQuery();
+      if (resultSet.next()) {
+        account = getFromResultSet(resultSet);
+      }
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    } finally {
+      closeResources();
+    }
+    return account;
+  }
+
+  public boolean confirmByToken(String token) {
+    boolean result = false;
+    try {
+      connection = getConnection();
+      String sql = "UPDATE account SET is_confirm = 1, confirmation_token = NULL, updated_at = ? WHERE confirmation_token = ?";
+      statement = connection.prepareStatement(sql);
+      statement.setDate(1, new java.sql.Date(new java.util.Date().getTime()));
+      statement.setString(2, token);
+      result = statement.executeUpdate() > 0;
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    } finally {
+      closeResources();
+    }
+    return result;
   }
 
   public static void main(String[] args) {

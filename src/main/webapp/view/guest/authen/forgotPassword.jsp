@@ -85,6 +85,7 @@
                   radial-gradient(600px 300px at -20% 120%, rgba(255,255,255,0.08), transparent 60%);
       pointer-events: none;
     }
+    .brand-side .logo { width: 120px; height: auto; margin-bottom: 18px; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.2)); }
     .brand-side h3 { font-size: 22px; font-weight: 700; text-align: center; line-height: 1.4; margin-bottom: 10px; }
     .brand-side p { font-size: 14px; opacity: 0.95; text-align: center; }
 
@@ -101,7 +102,7 @@
 
     .input-group input {
       width: 100%;
-      padding: 14px 44px 14px 44px;
+      padding: 14px 52px 14px 44px;
       border: 1px solid #e3e6f0;
       outline: none;
       background: #fff;
@@ -156,6 +157,11 @@
       box-shadow: 0 8px 16px rgba(248, 87, 25, 0.25);
     }
 
+    .btn.loading, .btn:disabled { opacity: 0.85; cursor: default; }
+    .btn.loading { position: relative; pointer-events: none; }
+    .btn.loading:after { content: ""; position: absolute; right: 14px; top: 50%; width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.5); border-top-color: #fff; transform: translateY(-50%); animation: spin .8s linear infinite; }
+    @keyframes spin { to { transform: translateY(-50%) rotate(360deg); } }
+
     .error-alert { margin-top: 16px; background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; padding: 10px 12px; border-radius: 10px; font-size: 14px; }
     .error-alert:empty { display: none; }
 
@@ -187,18 +193,19 @@
 </a>
 <div class="container" id="container">
   <div class="brand-side">
+    <img class="logo" src="${pageContext.request.contextPath}/guest/assets/images/logoFPT4.png" alt="Logo">
     <h3>Khôi phục mật khẩu</h3>
     <p>Nhập email của bạn để nhận liên kết đặt lại mật khẩu.</p>
   </div>
   <div class="form-side">
     <div class="form-wrapper">
       <h2>Quên Mật Khẩu</h2>
-      <form id="forgotPasswordForm" method="post" action="${pageContext.request.contextPath}/forgotPass">
+      <form id="forgotPasswordForm" method="post" action="${pageContext.request.contextPath}/forgotPass" onsubmit="handleForgotSubmit(event)">
         <div class="input-group">
           <i class="far fa-envelope" aria-hidden="true"></i>
           <input type="email" placeholder="Nhập email của bạn" name="email" autocomplete="email" required>
         </div>
-        <button type="submit" class="btn">Gửi yêu cầu</button>
+        <button id="forgotBtn" type="submit" class="btn">Gửi yêu cầu</button>
       </form>
       <div class="remember-forgot">
         <a href="${pageContext.request.contextPath}/view/guest/authen/login.jsp" id="backToLogin">Quay lại đăng nhập</a>
@@ -209,5 +216,15 @@
 </div>
 
 </body>
+<script>
+  function handleForgotSubmit(e) {
+    var btn = document.getElementById('forgotBtn');
+    if (btn) {
+      btn.classList.add('loading');
+      btn.setAttribute('disabled', 'disabled');
+      btn.textContent = 'Đang gửi...';
+    }
+  }
+</script>
 
 
