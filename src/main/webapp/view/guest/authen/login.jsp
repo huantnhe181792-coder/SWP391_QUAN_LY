@@ -27,8 +27,8 @@
     body {
       display: flex; justify-content: center; align-items: center;
       min-height: 100vh;
-      background: radial-gradient(1200px 600px at 10% 10%, rgba(60,170,159,0.10), transparent 60%),
-                  radial-gradient(1000px 500px at 90% 90%, rgba(60,170,159,0.08), transparent 60%),
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(248,87,25,0.10), transparent 60%),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(248,87,25,0.08), transparent 60%),
                   linear-gradient(135deg, #e3f2fd 0%, #e0f7fa 100%);
       overflow: hidden; position: relative; padding: 20px;
     }
@@ -36,13 +36,13 @@
     /* Nút Trang chủ */
     .home-button {
       position: absolute; top: 20px; left: 20px;
-      background: #3CAA9F; color: white;
+      background: #F85719; color: white;
       padding: 10px 16px; border-radius: 28px;
       text-decoration: none; display: flex; align-items: center; gap: 8px;
-      box-shadow: 0 4px 10px rgba(60, 170, 159, 0.3);
+      box-shadow: 0 4px 10px rgba(248, 87, 25, 0.3);
       transition: all 0.3s ease; z-index: 100;
     }
-    .home-button:hover { background: #2F8F86; transform: translateY(-2px); }
+    .home-button:hover { background: #E04F17; transform: translateY(-2px); }
 
     /* Card container */
     .container {
@@ -55,7 +55,7 @@
     }
 
     .brand-side {
-      background: linear-gradient(135deg, #3CAA9F 0%, #2F8F86 100%);
+      background: linear-gradient(135deg, #F85719 0%, #E04F17 100%);
       color: #fff; padding: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center;
       position: relative;
     }
@@ -72,39 +72,39 @@
     .form-side { padding: 40px; display: flex; justify-content: center; align-items: center; }
     .form-wrapper { width: 100%; max-width: 380px; }
 
-    h2 { color: #2F8F86; font-size: 28px; margin-bottom: 26px; text-align: center; }
+    h2 { color: #E04F17; font-size: 28px; margin-bottom: 26px; text-align: center; }
 
     /* Inputs with icons */
     .input-group { position: relative; width: 100%; margin-bottom: 18px; }
-    .input-group i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #3CAA9F; font-size: 16px; }
+    .input-group i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #F85719; font-size: 16px; }
     .input-group input {
       width: 100%; padding: 14px 44px 14px 44px; border-radius: 12px;
       border: 1px solid #e3e6f0; outline: none;
       font-size: 15px; background: #fff;
       transition: all 0.25s ease;
-      box-shadow: 0 4px 12px rgba(60, 170, 159, 0.10);
+      box-shadow: 0 4px 12px rgba(248, 87, 25, 0.10);
     }
-    .input-group input:focus { border-color: #3CAA9F; box-shadow: 0 0 0 4px rgba(60, 170, 159, 0.15); }
+    .input-group input:focus { border-color: #F85719; box-shadow: 0 0 0 4px rgba(248, 87, 25, 0.15); }
 
     .toggle-password {
       position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-      border: none; background: transparent; color: #3CAA9F; cursor: pointer; padding: 6px; border-radius: 8px;
+      border: none; background: transparent; color: #F85719; cursor: pointer; padding: 6px; border-radius: 8px;
     }
-    .toggle-password:hover { color: #2F8F86; background: rgba(60,170,159,0.10); }
+    .toggle-password:hover { color: #E04F17; background: rgba(248,87,25,0.10); }
 
     .remember-forgot { display: flex; justify-content: center; align-items: center; gap: 12px; margin: 6px 0 18px; font-size: 14px; color: #666; }
-    .remember-forgot a { color: #3CAA9F; text-decoration: none; transition: 0.25s; }
-    .remember-forgot a:hover { color: #2F8F86; text-decoration: underline; }
+    .remember-forgot a { color: #F85719; text-decoration: none; transition: 0.25s; }
+    .remember-forgot a:hover { color: #E04F17; text-decoration: underline; }
 
     .btn {
       width: 100%; padding: 14px; border: 0; border-radius: 12px;
-      background: linear-gradient(135deg, #3CAA9F 0%, #2F8F86 100%);
+      background: linear-gradient(135deg, #F85719 0%, #E04F17 100%);
       color: #fff; font-size: 16px; font-weight: 700; letter-spacing: 0.2px;
       cursor: pointer; transition: transform 0.08s ease, box-shadow 0.25s ease;
-      box-shadow: 0 10px 20px rgba(60, 170, 159, 0.25);
+      box-shadow: 0 10px 20px rgba(248, 87, 25, 0.25);
     }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(60, 170, 159, 0.35); }
-    .btn:active { transform: translateY(0); box-shadow: 0 8px 16px rgba(60, 170, 159, 0.25); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(248, 87, 25, 0.35); }
+    .btn:active { transform: translateY(0); box-shadow: 0 8px 16px rgba(248, 87, 25, 0.25); }
 
     .error-alert { margin-top: 16px; background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; padding: 10px 12px; border-radius: 10px; font-size: 14px; }
     .error-alert:empty { display: none; }
