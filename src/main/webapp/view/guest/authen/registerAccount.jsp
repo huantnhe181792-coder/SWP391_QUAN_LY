@@ -27,103 +27,97 @@
         body {
             display: flex; justify-content: center; align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%);
-            overflow: hidden; position: relative;
+            background: radial-gradient(1200px 600px at 10% 10%, rgba(60,170,159,0.10), transparent 60%),
+                        radial-gradient(1000px 500px at 90% 90%, rgba(60,170,159,0.08), transparent 60%),
+                        linear-gradient(135deg, #e3f2fd 0%, #e0f7fa 100%);
+            overflow: hidden; position: relative; padding: 20px;
         }
 
         /* Nút Trang chủ */
         .home-button {
             position: absolute; top: 20px; left: 20px;
-            background: #5c6bc0; color: white;
-            padding: 12px 20px; border-radius: 30px;
+            background: #3CAA9F; color: white;
+            padding: 10px 16px; border-radius: 28px;
             text-decoration: none; display: flex; align-items: center; gap: 8px;
-            box-shadow: 0 4px 10px rgba(92, 107, 192, 0.3);
+            box-shadow: 0 4px 10px rgba(60, 170, 159, 0.3);
             transition: all 0.3s ease; z-index: 100;
         }
-        .home-button:hover {
-            background: #3f51b5; transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(63, 81, 181, 0.4);
-        }
+        .home-button:hover { background: #2F8F86; transform: translateY(-2px); }
 
-        /* Khung container */
+        /* Card container */
         .container {
-            position: relative; width: 500px; height: 690px;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
+            position: relative; width: 960px; min-height: 720px;
+            background: #ffffff;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
             overflow: hidden;
+            display: grid; grid-template-columns: 1fr 1fr;
         }
 
-        .form-container {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%; display: flex;
-            transition: transform 0.6s ease-in-out;
+        .brand-side {
+            background: linear-gradient(135deg, #3CAA9F 0%, #2F8F86 100%);
+            color: #fff; padding: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            position: relative;
         }
+        .brand-side::after {
+            content: ""; position: absolute; inset: 0;
+            background: radial-gradient(800px 400px at 120% -10%, rgba(255,255,255,0.15), transparent 60%),
+                        radial-gradient(600px 300px at -20% 120%, rgba(255,255,255,0.08), transparent 60%);
+            pointer-events: none;
+        }
+        .brand-side h3 { font-size: 22px; font-weight: 700; text-align: center; line-height: 1.4; margin-bottom: 10px; }
+        .brand-side p { font-size: 14px; opacity: 0.9; text-align: center; }
 
-        .login-container, .register-container {
-            width: 100%; padding: 40px;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            flex-shrink: 0;
-        }
+        .form-side { padding: 36px; display: flex; justify-content: center; align-items: center; }
+        .form-wrapper { width: 100%; max-width: 420px; }
 
-        .register-container { transform: translateX(100%); }
-        .container.active .login-container { transform: translateX(-100%); }
-        .container.active .register-container { transform: translateX(0); }
+        h2 { color: #2F8F86; font-size: 28px; margin-bottom: 22px; text-align: center; }
 
-        h2 {
-            color: #5c6bc0; font-size: 2em; margin-bottom: 30px;
-            text-align: center; text-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        /* Inputs with icons */
+        .input-group { position: relative; width: 100%; margin-bottom: 16px; }
+        .input-group i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #3CAA9F; font-size: 16px; }
+        .input-group input,
+        .input-group select {
+            width: 100%; padding: 12px 44px; border-radius: 12px;
+            border: 1px solid #e3e6f0; outline: none;
+            font-size: 15px; background: #fff;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 12px rgba(60, 170, 159, 0.10);
+            appearance: none;
         }
+        .input-group input:focus, .input-group select:focus { border-color: #3CAA9F; box-shadow: 0 0 0 4px rgba(60, 170, 159, 0.15); }
 
-        /* Ô input */
-        .input-group {
-            position: relative; width: 100%; margin-bottom: 20px;
+        .toggle-password {
+            position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+            border: none; background: transparent; color: #3CAA9F; cursor: pointer; padding: 6px; border-radius: 8px;
         }
-        .input-group input {
-            width: 100%; padding: 5px 10px; border-radius: 10px;
-            border: 1px solid #ddd; outline: none;
-            font-size: 16px; background: rgba(255, 255, 255, 0.9);
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-        .input-group input:focus {
-            border-color: #5c6bc0;
-            box-shadow: 0 0 10px rgba(92, 107, 192, 0.2);
-        }
+        .toggle-password:hover { color: #2F8F86; background: rgba(60,170,159,0.10); }
 
-        /* Quên mật khẩu */
-        .remember-forgot {
-            display: flex; justify-content: center;
-            width: 100%; margin-bottom: 20px;
-            font-size: 14px; color: #666;
-        }
-        .remember-forgot a {
-            color: #5c6bc0; text-decoration: none; transition: 0.3s;
-        }
-        .remember-forgot a:hover {
-            color: #3f51b5; text-decoration: underline;
-        }
+        .remember-forgot { display: flex; justify-content: center; align-items: center; gap: 12px; margin: 10px 0 18px; font-size: 14px; color: #666; }
+        .remember-forgot a { color: #3CAA9F; text-decoration: none; transition: 0.25s; }
+        .remember-forgot a:hover { color: #2F8F86; text-decoration: underline; }
 
-        /* Button */
         .btn {
-            width: 100%; padding: 15px;
-            border: none; border-radius: 10px;
-            background: #5c6bc0; color: white;
-            font-size: 16px; font-weight: 600;
-            cursor: pointer; transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(92, 107, 192, 0.3);
+            width: 100%; padding: 14px; border: 0; border-radius: 12px;
+            background: linear-gradient(135deg, #3CAA9F 0%, #2F8F86 100%);
+            color: #fff; font-size: 16px; font-weight: 700; letter-spacing: 0.2px;
+            cursor: pointer; transition: transform 0.08s ease, box-shadow 0.25s ease;
+            box-shadow: 0 10px 20px rgba(60, 170, 159, 0.25);
         }
-        .btn:hover {
-            background: #3f51b5; transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(63, 81, 181, 0.4);
-        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(60, 170, 159, 0.35); }
+        .btn:active { transform: translateY(0); box-shadow: 0 8px 16px rgba(60, 170, 159, 0.25); }
 
+        .error-alert { margin-top: 16px; background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; padding: 10px 12px; border-radius: 10px; font-size: 14px; }
+        .error-alert:empty { display: none; }
+
+        @media (max-width: 960px) {
+            .container { width: 100%; grid-template-columns: 1fr; min-height: unset; }
+            .brand-side { padding: 32px 28px; }
+            .form-side { padding: 28px; }
+        }
         @media (max-width: 480px) {
-            .container { width: 90%; height: auto; padding: 20px 0; }
-            .login-container, .register-container { padding: 30px 20px; }
-            .home-button { top: 10px; left: 10px; padding: 10px 15px; font-size: 14px; }
+            .home-button { top: 10px; left: 10px; padding: 8px 12px; font-size: 14px; }
+            .form-wrapper { max-width: 100%; }
         }
     </style>
 </head>
@@ -136,84 +130,85 @@
 
 <!-- Container -->
 <div class="container" id="container">
-    <div class="form-container">
-
-        <!-- Form Đăng Nhập -->
-        <div class="login-container">
+    <div class="brand-side">
+        <h3>Tham gia cộng đồng FPTU Club</h3>
+        <p>Tạo tài khoản để kết nối, đăng ký CLB và cập nhật sự kiện.</p>
+    </div>
+    <div class="form-side">
+        <div class="form-wrapper">
             <h2>Đăng Ký</h2>
-            <form id="loginForm" method="post" action="${pageContext.request.contextPath}/registerAccount">
+            <form id="registerForm" method="post" action="${pageContext.request.contextPath}/registerAccount">
                 <div class="input-group">
-                    <input type="text" placeholder="Email" name="email" required>
+                    <i class="far fa-envelope" aria-hidden="true"></i>
+                    <input type="email" placeholder="Email" name="email" autocomplete="email" required>
                 </div>
                 <div class="input-group">
-                    <input type="text" placeholder="Họ và tên " name="fullname" required>
+                    <i class="far fa-id-card" aria-hidden="true"></i>
+                    <input type="text" placeholder="Họ và tên" name="fullname" autocomplete="name" required>
                 </div>
                 <div class="input-group">
-                    <input type="text" placeholder="Tỉnh " name="address" required>
+                    <i class="fas fa-location-dot" aria-hidden="true"></i>
+                    <input type="text" placeholder="Tỉnh/Thành phố" name="address" autocomplete="address-level1" required>
                 </div>
                 <div class="input-group">
-                    <input type="text" placeholder="Số điện thoại " name="phone" required>
+                    <i class="fas fa-phone" aria-hidden="true"></i>
+                    <input type="tel" placeholder="Số điện thoại" name="phone" autocomplete="tel" required>
                 </div>
                 <div class="input-group">
-                    <input type="text" placeholder="Mã sinh viên " name="studentId" required>
+                    <i class="fas fa-id-badge" aria-hidden="true"></i>
+                    <input type="text" placeholder="Mã sinh viên" name="studentId" required>
                 </div>
                 <div class="input-group">
-                    <select name="gender" style="width: 100%; height: 30px;border: none;outline: solid 0.2px #d6d1d1; border-radius: 10px; text-align: center;">
-                        <option>Giới tính</option>
+                    <i class="fas fa-venus-mars" aria-hidden="true"></i>
+                    <select name="gender" required>
+                        <option value="" disabled selected>Giới tính</option>
                         <option value="male">Nam</option>
                         <option value="female">Nữ</option>
                         <option value="other">Khác</option>
                     </select>
                 </div>
                 <div class="input-group">
+                    <i class="fas fa-calendar" aria-hidden="true"></i>
                     <input type="date" name="dob" required>
                 </div>
                 <div class="input-group">
-                    <input type="password" placeholder="Mật khẩu" name="password" required>
+                    <i class="fas fa-lock" aria-hidden="true"></i>
+                    <input id="password" type="password" placeholder="Mật khẩu" name="password" autocomplete="new-password" required>
+                    <button type="button" class="toggle-password" data-target="password" aria-label="Hiển thị/Ẩn mật khẩu"><i class="far fa-eye"></i></button>
                 </div>
                 <div class="input-group">
-                    <input type="password" placeholder="Xác nhận mật khẩu" name="confirmPassword" required>
+                    <i class="fas fa-lock" aria-hidden="true"></i>
+                    <input id="confirmPassword" type="password" placeholder="Xác nhận mật khẩu" name="confirmPassword" autocomplete="new-password" required>
+                    <button type="button" class="toggle-password" data-target="confirmPassword" aria-label="Hiển thị/Ẩn mật khẩu"><i class="far fa-eye"></i></button>
                 </div>
 
                 <div class="remember-forgot">
-                    <a href="${pageContext.request.contextPath}/view/guest/authen/login.jsp" style="margin-right: 15px">Đã có tài khoản?</a>
+                    <a href="${pageContext.request.contextPath}/view/guest/authen/login.jsp">Đã có tài khoản?</a>
+                    <span style="color:#bdbdbd">|</span>
                     <a href="${pageContext.request.contextPath}/view/guest/authen/forgotPassword.jsp">Quên mật khẩu?</a>
                 </div>
                 <button type="submit" class="btn">Đăng Ký</button>
             </form>
-
-            <!-- Hiển thị lỗi -->
-            <div class="social-login" style="margin-top: 20px;color: red">
-                ${error}
-            </div>
+            <div class="error-alert">${error}</div>
         </div>
-
-        <%-- Form Đăng Ký (commented) --%>
-        <%--
-        <div class="register-container">
-            <h2>Đăng Ký</h2>
-            <form id="registerForm">
-                <div class="input-group">
-                    <input type="text" placeholder="Họ và tên" required>
-                </div>
-                <div class="input-group">
-                    <input type="email" placeholder="Email" required>
-                </div>
-                <div class="input-group">
-                    <input type="text" placeholder="Tên đăng nhập" required>
-                </div>
-                <div class="input-group">
-                    <input type="password" placeholder="Mật khẩu" required>
-                </div>
-                <div class="input-group">
-                    <input type="password" placeholder="Xác nhận mật khẩu" required>
-                </div>
-                <button type="submit" class="btn">Đăng Ký</button>
-            </form>
-        </div>
-        --%>
     </div>
 </div>
 </body>
+<script>
+    (function() {
+        var toggles = document.querySelectorAll('.toggle-password');
+        toggles.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var targetId = this.getAttribute('data-target');
+                var input = document.getElementById(targetId);
+                if (!input) return;
+                var isHidden = input.getAttribute('type') === 'password';
+                input.setAttribute('type', isHidden ? 'text' : 'password');
+                var icon = this.querySelector('i');
+                if (icon) { icon.className = isHidden ? 'far fa-eye-slash' : 'far fa-eye'; }
+            });
+        });
+    })();
+</script>
 </html>
 
