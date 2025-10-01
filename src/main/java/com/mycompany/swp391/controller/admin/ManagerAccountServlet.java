@@ -27,7 +27,6 @@ public class ManagerAccountServlet extends HttpServlet {
     private static final int SALT_LENGTH = 16;
 
     AccountDAO accountDAO = new AccountDAO();
-
     public static final String URL_LIST_ACCOUNT = "view/admin/admin/list-account.jsp";
     public static final String URL_ACCOUNT = "view/admin/admin/account.jsp";
     public static final String URL_ADD_ACCOUNT = "view/admin/admin/add-account.jsp";
@@ -40,12 +39,10 @@ public class ManagerAccountServlet extends HttpServlet {
             case "list-account":
                 viewListAccount(request, response);
                 break;
-            case "account-detail":
-
-                break;
             case "account-update":
                 updateAccount(request, response);
                 break;
+
             default:
                 throw new AssertionError();
         }
@@ -58,12 +55,6 @@ public class ManagerAccountServlet extends HttpServlet {
         switch (action) {
             case "account-update":
                 updateAccountDoPost(request, response);
-                break;
-            case "account-delete":
-
-                break;
-            case "account-add":
-
                 break;
             default:
                 throw new AssertionError();
@@ -106,7 +97,7 @@ public class ManagerAccountServlet extends HttpServlet {
                 String address = request.getParameter("address");
 
                 // Cập nhật thông tin mới cho tài khoản
-                currentAccount.setRole(role);
+                // currentAccount.setRole(role);
                 currentAccount.setStatus(status);
                 currentAccount.setAddress(address);
                 currentAccount.setUpdated_at(new java.sql.Date(System.currentTimeMillis()));
