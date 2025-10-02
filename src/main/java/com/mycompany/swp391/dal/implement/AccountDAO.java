@@ -69,6 +69,7 @@ public class AccountDAO extends DBContext implements I_DAO<Account> {
         try {
             connection = getConnection();
             String sql = "UPDATE account SET email=?, password=?, fullname=?, role=?, phone=?, gender=?, bod=?, updated_at=?, status=?, address=?, student_id=? WHERE id=?";
+            String sql = "UPDATE account SET email=?, password=?, fullname=?, phone=?, gender=?, bod=?, updated_at=?, status=?, address=?, student_id=? WHERE id=?";
             statement = connection.prepareStatement(sql);
             statement.setString(1, t.getEmail());
             statement.setString(2, t.getPassword());
@@ -82,6 +83,14 @@ public class AccountDAO extends DBContext implements I_DAO<Account> {
             statement.setString(10, t.getAddress());
             statement.setString(11, t.getStudent_id());
             statement.setInt(12, t.getId());
+            statement.setString(4, t.getPhone());
+            statement.setString(5, t.getGender());
+            statement.setDate(6, new java.sql.Date(t.getBod().getTime()));
+            statement.setDate(7, new java.sql.Date(new java.util.Date().getTime())); // current date for updated_at
+            statement.setString(8, t.getStatus());
+            statement.setString(9, t.getAddress());
+            statement.setString(10, t.getStudent_id());
+            statement.setInt(11, t.getId());
             result = statement.executeUpdate() > 0;
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -123,6 +132,7 @@ public class AccountDAO extends DBContext implements I_DAO<Account> {
             closeResources();
         }
         return result;
+      throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
@@ -160,6 +170,7 @@ public class AccountDAO extends DBContext implements I_DAO<Account> {
             closeResources();
         }
         return generatedId;
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
@@ -222,5 +233,10 @@ public class AccountDAO extends DBContext implements I_DAO<Account> {
 
     public static void main(String[] args) {
         System.out.println(new AccountDAO().findByEmail("levana2@gmail.com"));
+    @Override
+    public Account findById(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    
 }

@@ -13,10 +13,12 @@ public interface I_DAO<T> {
 
     public List<T> findAll();
     
+
     public Map<Integer, T> findAllMap();
     
     public boolean update(T t);
     
+
     public boolean delete(T t);
 
     public int insert(T t);
