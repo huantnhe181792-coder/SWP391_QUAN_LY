@@ -147,27 +147,27 @@
             <form id="registerForm" method="post" action="${pageContext.request.contextPath}/registerAccount" onsubmit="handleRegisterSubmit(event)">
                 <div class="input-group">
                     <i class="far fa-envelope" aria-hidden="true"></i>
-                    <input type="email" placeholder="Email" name="email" autocomplete="email" required>
+                    <input type="email" placeholder="Email" name="email" autocomplete="email" value="${param.email}" required>
                 </div>
                 <div class="input-group">
                     <i class="far fa-id-card" aria-hidden="true"></i>
-                    <input type="text" placeholder="Họ và tên" name="fullname" autocomplete="name" required>
+                    <input type="text" placeholder="Họ và tên" name="fullname" autocomplete="name" value="${param.fullname}" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-location-dot" aria-hidden="true"></i>
-                    <input type="text" placeholder="Tỉnh/Thành phố" name="address" autocomplete="address-level1" required>
+                    <input type="text" placeholder="Tỉnh/Thành phố" name="address" autocomplete="address-level1" value="${param.address}" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-phone" aria-hidden="true"></i>
-                    <input type="tel" placeholder="Số điện thoại" name="phone" autocomplete="tel" required>
+                    <input type="tel" placeholder="Số điện thoại" name="phone" autocomplete="tel" value="${param.phone}" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-id-badge" aria-hidden="true"></i>
-                    <input type="text" placeholder="Mã sinh viên" name="studentId" required>
+                    <input type="text" placeholder="Mã sinh viên" name="studentId" value="${param.studentId}" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-venus-mars" aria-hidden="true"></i>
-                    <select name="gender" required>
+                    <select name="gender" data-value="${param.gender}" required>
                         <option value="" disabled selected>Giới tính</option>
                         <option value="male">Nam</option>
                         <option value="female">Nữ</option>
@@ -176,7 +176,7 @@
                 </div>
                 <div class="input-group">
                     <i class="fas fa-calendar" aria-hidden="true"></i>
-                    <input type="date" name="dob" required>
+                    <input type="date" name="dob" value="${param.dob}" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-lock" aria-hidden="true"></i>
@@ -225,6 +225,20 @@
             btn.textContent = 'Đang xử lý...';
         }
     }
+
+    // Re-select gender if provided from server (param.gender)
+    (function() {
+        var select = document.querySelector('select[name="gender"]');
+        if (select && select.dataset.value) {
+            var v = select.dataset.value;
+            for (var i = 0; i < select.options.length; i++) {
+                if (select.options[i].value === v) {
+                    select.selectedIndex = i;
+                    break;
+                }
+            }
+        }
+    })();
 </script>
 </html>
 

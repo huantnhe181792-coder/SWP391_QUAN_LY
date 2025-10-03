@@ -188,6 +188,7 @@ public class AccountDAO extends DBContext implements I_DAO<Account> {
     return account;
   }
 
+
   public Account findByEmail(String email) {
     Account account = null;
     try {

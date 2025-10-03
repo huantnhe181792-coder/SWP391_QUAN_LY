@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.time.format.DateTimeParseException;
 import java.security.SecureRandom;
 
@@ -80,10 +82,24 @@ public class RegisterAccount extends HttpServlet {
 
     private String validateRegisterInput(String email, String fullname, String password, String confirmPassword,
                                          String gender, String address, String studentID, Date dob, String phone) {
+        AccountDAO dao = new AccountDAO();
+
+        if(dob == null){
+            return "Ngày sinh không hợp lệ!";
+        }
+        LocalDate birthDate = dob.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        LocalDate today = LocalDate.now();
+        int age = Period.between(birthDate, today).getYears();
 
         if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
             return "Email không hợp lệ!";
         }
+        if(dao.findByEmail(email)!=null){
+            return "Email bị trùng!";
+        }
+
         if (fullname == null || fullname.trim().isEmpty()) {
             return "Họ và tên không được để trống!";
         }
@@ -96,14 +112,14 @@ public class RegisterAccount extends HttpServlet {
         if (gender == null || !(gender.equalsIgnoreCase("male") || gender.equalsIgnoreCase("female"))) {
             return "Giới tính không hợp lệ!";
         }
+        if (age < 18) {
+            return "Bạn chưa đủ 18 tuổi!";
+        }
         if (address == null || address.trim().isEmpty()) {
             return "Địa chỉ không được để trống!";
         }
         if (studentID == null || studentID.trim().isEmpty()) {
             return "Mã sinh viên không được để trống!";
-        }
-        if (dob == null) {
-            return "Ngày sinh không hợp lệ!";
         }
         if (phone == null || !phone.matches("^[0-9]{9,11}$")) {
             return "Số điện thoại phải từ 9-11 chữ số!";
