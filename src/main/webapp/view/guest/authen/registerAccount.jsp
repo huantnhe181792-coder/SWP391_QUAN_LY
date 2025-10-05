@@ -155,7 +155,14 @@
                 </div>
                 <div class="input-group">
                     <i class="fas fa-location-dot" aria-hidden="true"></i>
-                    <input type="text" placeholder="Tỉnh/Thành phố" name="address" autocomplete="address-level1" value="${param.address}" required>
+                    <select name="address" data-value="${param.address}" required>
+                        <option value="" disabled selected>Chọn Tỉnh/Thành phố</option>
+                        <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+                        <option value="Hà Nội">Hà Nội</option>
+                        <option value="Đà Nẵng">Đà Nẵng</option>
+                        <option value="Cần Thơ">Cần Thơ</option>
+                        <option value="Quy Nhơn">Quy Nhơn</option>
+                    </select>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-phone" aria-hidden="true"></i>
@@ -167,7 +174,7 @@
                 </div>
                 <div class="input-group">
                     <i class="fas fa-venus-mars" aria-hidden="true"></i>
-                    <select name="gender" data-value="${param.gender}" required>
+                    <select name="gender" required>
                         <option value="" disabled selected>Giới tính</option>
                         <option value="male">Nam</option>
                         <option value="female">Nữ</option>
@@ -226,9 +233,9 @@
         }
     }
 
-    // Re-select gender if provided from server (param.gender)
+    // Re-select address if provided from server (param.address)
     (function() {
-        var select = document.querySelector('select[name="gender"]');
+        var select = document.querySelector('select[name="address"]');
         if (select && select.dataset.value) {
             var v = select.dataset.value;
             for (var i = 0; i < select.options.length; i++) {
@@ -239,6 +246,8 @@
             }
         }
     })();
+
+    // No JS needed for gender; handled by server-side EL checked attributes
 </script>
 </html>
 
