@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.swp391.entity;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,8 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.sql.Date;
-
 @ToString
 @Builder
 @Data
@@ -21,21 +18,9 @@ import java.sql.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Account {
-
+public class AccountClub {
     private Integer id;
-    private String email;
-    private String password;
-    private String fullname;
+    private Integer account_id;
+    private Integer club_id;
     private String role;
-    private String phone ;
-    private String gender;
-    private Date bod;
-    private Date created_at;
-    private Date updated_at;
-    private String status;
-    private String address;
-    private String student_id;
-    private String confirmationToken;
-    private boolean isConfirm = false;
 }

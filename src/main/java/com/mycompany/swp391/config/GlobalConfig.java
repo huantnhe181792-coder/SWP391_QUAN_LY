@@ -16,6 +16,15 @@ public class GlobalConfig {
     public static final String STATUS_RESULT_REJECT = "Reject";
     public static final String STATUS_RESULT_ACCEPT = "Accept";
 
+    /**
+     * SESSION_ACCOUNT: Đối tượng tài khoản được lưu trong phiên làm việc
+     * (session)
+     */
     public static final String SESSION_ACCOUNT = "account";
-    public static final Integer RECORD_PER_PAGE = 6;
+    public static final String SESSION_ACCOUNT_CLUB = "account_club";
+    public static final Integer RECORD_PER_PAGE = 10;
+
+    //Email Services
+    public static final String USERNAME_EMAIL = "subzerozzabs@gmail.com";
+    public static final String PASSWORD_APP_EMAIL = "nmps xeoc dzcv ctje";
 }
