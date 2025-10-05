@@ -12,7 +12,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Đăng Nhập</title>
+  <title>Quên Mật Khẩu</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * {
@@ -27,32 +27,35 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%);
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(248,87,25,0.10), transparent 60%),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(248,87,25,0.08), transparent 60%),
+                  linear-gradient(135deg, #e3f2fd 0%, #e0f7fa 100%);
       overflow: hidden;
       position: relative;
+      padding: 20px;
     }
 
     .home-button {
       position: absolute;
       top: 20px;
       left: 20px;
-      background: #5c6bc0;
+      background: #F85719;
       color: white;
-      padding: 12px 20px;
-      border-radius: 30px;
+      padding: 10px 16px;
+      border-radius: 28px;
       text-decoration: none;
       display: flex;
       align-items: center;
       gap: 8px;
-      box-shadow: 0 4px 10px rgba(92, 107, 192, 0.3);
+      box-shadow: 0 4px 10px rgba(248, 87, 25, 0.3);
       transition: all 0.3s ease;
       z-index: 100;
     }
 
     .home-button:hover {
-      background: #3f51b5;
+      background: #E04F17;
       transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(63, 81, 181, 0.4);
+      box-shadow: 0 6px 15px rgba(248, 87, 25, 0.35);
     }
 
     .home-button:active {
@@ -61,54 +64,35 @@
 
     .container {
       position: relative;
-      width: 500px;
-      height: 500px;
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(10px);
+      width: 920px;
+      min-height: 480px;
+      background: #ffffff;
       border-radius: 20px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
       overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
     }
 
-    .form-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      transition: transform 0.6s ease-in-out;
+    .brand-side {
+      background: linear-gradient(135deg, #F85719 0%, #E04F17 100%);
+      color: #fff; padding: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center;
+      position: relative;
     }
+    .brand-side::after {
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(800px 400px at 120% -10%, rgba(255,255,255,0.15), transparent 60%),
+                  radial-gradient(600px 300px at -20% 120%, rgba(255,255,255,0.08), transparent 60%);
+      pointer-events: none;
+    }
+    .brand-side .logo { width: 120px; height: auto; margin-bottom: 18px; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.2)); }
+    .brand-side h3 { font-size: 22px; font-weight: 700; text-align: center; line-height: 1.4; margin-bottom: 10px; }
+    .brand-side p { font-size: 14px; opacity: 0.95; text-align: center; }
 
-    .login-container, .register-container {
-      width: 100%;
-      padding: 40px;
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
+    .form-side { padding: 40px; display: flex; justify-content: center; align-items: center; }
+    .form-wrapper { width: 100%; max-width: 380px; }
 
-    .register-container {
-      transform: translateX(100%);
-    }
-
-    .container.active .login-container {
-      transform: translateX(-100%);
-    }
-
-    .container.active .register-container {
-      transform: translateX(0);
-    }
-
-    h2 {
-      color: #5c6bc0;
-      font-size: 2em;
-      margin-bottom: 30px;
-      text-align: center;
-      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    }
+    h2 { color: #E04F17; font-size: 28px; margin-bottom: 26px; text-align: center; }
 
     .input-group {
       position: relative;
@@ -118,21 +102,20 @@
 
     .input-group input {
       width: 100%;
-      padding: 15px 20px;
-      border: none;
+      padding: 14px 52px 14px 44px;
+      border: 1px solid #e3e6f0;
       outline: none;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 10px;
+      background: #fff;
+      border-radius: 12px;
       color: #333;
-      font-size: 16px;
+      font-size: 15px;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-      border: 1px solid #ddd;
+      box-shadow: 0 4px 12px rgba(248, 87, 25, 0.10);
     }
 
     .input-group input:focus {
-      border-color: #5c6bc0;
-      box-shadow: 0 0 10px rgba(92, 107, 192, 0.2);
+      border-color: #F85719;
+      box-shadow: 0 0 0 4px rgba(248, 87, 25, 0.15);
     }
 
     .input-group input::placeholder {
@@ -140,172 +123,52 @@
     }
 
     .input-group i {
-      position: absolute;
-      right: 20px;
-      top: 15px;
-      color: #aaa;
-      transition: all 0.3s ease;
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      color: #F85719; font-size: 16px; transition: all 0.3s ease;
     }
 
-    .input-group input:focus + i {
-      color: #5c6bc0;
-    }
+    .input-group input:focus + i { color: #E04F17; }
 
-    .remember-forgot {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-      margin-bottom: 20px;
-      font-size: 14px;
-      color: #666;
-    }
-
-    .remember-forgot label {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-    }
-
-    .remember-forgot input {
-      margin-right: 5px;
-      accent-color: #5c6bc0;
-    }
-
-    .remember-forgot a {
-      color: #5c6bc0;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-
-    .remember-forgot a:hover {
-      color: #3f51b5;
-      text-decoration: underline;
-    }
+    .remember-forgot { display: flex; justify-content: center; align-items: center; gap: 12px; margin: 10px 0 0; font-size: 14px; color: #666; }
+    .remember-forgot a { color: #F85719; text-decoration: none; transition: 0.25s; }
+    .remember-forgot a:hover { color: #E04F17; text-decoration: underline; }
 
     .btn {
       width: 100%;
-      padding: 15px;
-      border: none;
-      border-radius: 10px;
-      background: #5c6bc0;
+      padding: 14px;
+      border: 0;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #F85719 0%, #E04F17 100%);
       color: white;
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(92, 107, 192, 0.3);
+      transition: transform 0.08s ease, box-shadow 0.25s ease;
+      box-shadow: 0 10px 20px rgba(248, 87, 25, 0.25);
     }
 
     .btn:hover {
-      background: #3f51b5;
       transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(63, 81, 181, 0.4);
+      box-shadow: 0 14px 28px rgba(248, 87, 25, 0.35);
     }
 
     .btn:active {
       transform: translateY(0);
-      box-shadow: 0 3px 10px rgba(63, 81, 181, 0.3);
+      box-shadow: 0 8px 16px rgba(248, 87, 25, 0.25);
     }
 
-    .switch-form {
-      margin-top: 20px;
-      color: #666;
-      font-size: 14px;
-      text-align: center;
-    }
+    .btn.loading, .btn:disabled { opacity: 0.85; cursor: default; }
+    .btn.loading { position: relative; pointer-events: none; }
+    .btn.loading:after { content: ""; position: absolute; right: 14px; top: 50%; width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.5); border-top-color: #fff; transform: translateY(-50%); animation: spin .8s linear infinite; }
+    @keyframes spin { to { transform: translateY(-50%) rotate(360deg); } }
 
-    .switch-form a {
-      color: #5c6bc0;
-      text-decoration: none;
-      font-weight: 600;
-      margin-left: 5px;
-      transition: all 0.3s ease;
-      position: relative;
-    }
+    .error-alert { margin-top: 16px; background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; padding: 10px 12px; border-radius: 10px; font-size: 14px; }
+    .error-alert:empty { display: none; }
 
-    .switch-form a::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 0;
-      height: 1px;
-      background: #5c6bc0;
-      transition: width 0.3s ease;
-    }
-
-    .switch-form a:hover::after {
-      width: 100%;
-    }
-
-    .social-login {
-      margin-top: 25px;
-      width: 100%;
-    }
-
-    .social-login p {
-      text-align: center;
-      color: #666;
-      margin-bottom: 15px;
-      position: relative;
-    }
-
-    .social-login p::before,
-    .social-login p::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      width: 30%;
-      height: 1px;
-      background: #ddd;
-    }
-
-    .social-login p::before {
-      left: 0;
-    }
-
-    .social-login p::after {
-      right: 0;
-    }
-
-    .social-icons {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-    }
-
-    .social-icons a {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      background: #f5f5f5;
-      color: #555;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    }
-
-    .social-icons a:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .social-icons a:nth-child(1):hover {
-      background: #3b5998;
-      color: white;
-    }
-
-    .social-icons a:nth-child(2):hover {
-      background: #1da1f2;
-      color: white;
-    }
-
-    .social-icons a:nth-child(3):hover {
-      background: #db4437;
-      color: white;
+    @media (max-width: 960px) {
+      .container { width: 100%; grid-template-columns: 1fr; min-height: unset; }
+      .brand-side { padding: 32px 28px; }
+      .form-side { padding: 28px; }
     }
 
     @media (max-width: 480px) {
@@ -313,10 +176,6 @@
         width: 90%;
         height: auto;
         padding: 20px 0;
-      }
-
-      .login-container, .register-container {
-        padding: 30px 20px;
       }
 
       .home-button {
@@ -333,42 +192,39 @@
   <i class="fas fa-home"></i> Trang Chủ
 </a>
 <div class="container" id="container">
-  <div class="form-container">
-    <!-- Form Quên Mật Khẩu -->
-    <div class="forgot-password-container" style="display:none; width:100%; padding:40px; flex-shrink:0; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+  <div class="brand-side">
+    <img class="logo" src="${pageContext.request.contextPath}/guest/assets/images/logoFPT4.png" alt="Logo">
+    <h3>Khôi phục mật khẩu</h3>
+    <p>Nhập email của bạn để nhận liên kết đặt lại mật khẩu.</p>
+  </div>
+  <div class="form-side">
+    <div class="form-wrapper">
       <h2>Quên Mật Khẩu</h2>
-      <form id="forgotPasswordForm" method="post" action="${pageContext.request.contextPath}/forgotPass">
+      <form id="forgotPasswordForm" method="post" action="${pageContext.request.contextPath}/forgotPass" onsubmit="handleForgotSubmit(event)">
         <div class="input-group">
-          <input type="email" placeholder="Nhập email của bạn" name="email" required>
+          <i class="far fa-envelope" aria-hidden="true"></i>
+          <input type="email" placeholder="Nhập email của bạn" name="email" autocomplete="email" required>
         </div>
-        <button type="submit" class="btn">Gửi yêu cầu</button>
+        <button id="forgotBtn" type="submit" class="btn">Gửi yêu cầu</button>
       </form>
-      <div class="switch-form">
+      <div class="remember-forgot">
         <a href="${pageContext.request.contextPath}/view/guest/authen/login.jsp" id="backToLogin">Quay lại đăng nhập</a>
       </div>
-      <div class="social-login" style="margin-top: 15px">
-        ${notifi}
-      </div>
+      <div class="error-alert">${notifi}</div>
     </div>
   </div>
 </div>
 
-<script>
-
-  // Hiệu ứng cho input
-  const inputs = document.querySelectorAll('input');
-  inputs.forEach(input => {
-    input.addEventListener('focus', () => {
-      input.parentElement.classList.add('focus');
-    });
-
-    input.addEventListener('blur', () => {
-      if (input.value === '') {
-        input.parentElement.classList.remove('focus');
-      }
-    });
-  });
-</script>
 </body>
+<script>
+  function handleForgotSubmit(e) {
+    var btn = document.getElementById('forgotBtn');
+    if (btn) {
+      btn.classList.add('loading');
+      btn.setAttribute('disabled', 'disabled');
+      btn.textContent = 'Đang gửi...';
+    }
+  }
+</script>
 
 
