@@ -4,9 +4,11 @@
  */
 package com.mycompany.swp391.dal.implement;
 
-import com.fall25.sp.swp.quanly.entity.Club;
+
 import com.mycompany.swp391.dal.DBContext;
 import com.mycompany.swp391.dal.I_DAO;
+import com.mycompany.swp391.entity.Club;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
