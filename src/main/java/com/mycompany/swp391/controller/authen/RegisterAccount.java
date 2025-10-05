@@ -87,9 +87,10 @@ public class RegisterAccount extends HttpServlet {
         if(dob == null){
             return "Ngày sinh không hợp lệ!";
         }
-        LocalDate birthDate = dob.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
+        LocalDate birthDate;
+
+            birthDate = dob.toLocalDate();
+
         LocalDate today = LocalDate.now();
         int age = Period.between(birthDate, today).getYears();
 
