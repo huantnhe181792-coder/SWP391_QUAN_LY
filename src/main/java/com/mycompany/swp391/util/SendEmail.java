@@ -14,7 +14,7 @@ public class SendEmail {
     private static final String SMTP_PASSWORD = "xpewdawsihwpigoa";
 
     /**
-     * Generic email sender using Gmail SMTP.
+     * Generic email sender using Gmail SMTP..
      * @param toEmail recipient email
      * @param subject email subject
      * @param body email body (text or HTML based on isHtml)
