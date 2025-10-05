@@ -3,6 +3,7 @@ package com.mycompany.swp391.controller.authen;
 
 import com.mycompany.swp391.dal.implement.AccountDAO;
 import com.mycompany.swp391.entity.Account;
+import com.mycompany.swp391.util.SendEmail;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,9 +11,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
+import java.time.format.DateTimeParseException;
+import java.security.SecureRandom;
 
 @WebServlet("/registerAccount")
 public class RegisterAccount extends HttpServlet {
@@ -43,7 +47,6 @@ public class RegisterAccount extends HttpServlet {
         if (validationMessage != null) {
             req.setAttribute("error", validationMessage);
             req.getRequestDispatcher("view/guest/authen/registerAccount.jsp").forward(req, resp);
-            return;
         }
         else{
             Account account = new Account();
@@ -57,8 +60,21 @@ public class RegisterAccount extends HttpServlet {
             account.setPhone(phone);
             account.setStudent_id(studentID);
             account.setStatus("active");
+            String confirmationToken = generateNumericToken(40);
+            account.setConfirmationToken(confirmationToken);
+            account.setConfirm(false);
+            
             if(accountDAO.insert(account)!=-1){
-                req.setAttribute("success", "Register Success");
+                // Gửi email xác nhận tài khoản
+                String subject = "Xác nhận tài khoản";
+                String baseUrl = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath();
+                String confirmLink = baseUrl + "/confirm?token=" + confirmationToken;
+                String body = "Xin chào " + fullname + ",<br><br>" +
+                        "Nhấn vào liên kết dưới đây để xác nhận tài khoản của bạn:<br>" +
+                        "<a href='" + confirmLink + "'>" + confirmLink + "</a><br><br>" +
+                        "Nếu bạn không đăng ký tài khoản, vui lòng bỏ qua email này.";
+                SendEmail.sendEmail(email, subject, body, true, "Hệ thống Quản Lý CLB");
+                req.setAttribute("success", "Đăng ký thành công! Vui lòng kiểm tra email để xác nhận tài khoản");
                 req.getRequestDispatcher("view/guest/authen/login.jsp").forward(req, resp);
             }
         }
@@ -66,10 +82,25 @@ public class RegisterAccount extends HttpServlet {
 
     private String validateRegisterInput(String email, String fullname, String password, String confirmPassword,
                                          String gender, String address, String studentID, Date dob, String phone) {
+        AccountDAO dao = new AccountDAO();
+
+        if(dob == null){
+            return "Ngày sinh không hợp lệ!";
+        }
+        LocalDate birthDate;
+
+            birthDate = dob.toLocalDate();
+
+        LocalDate today = LocalDate.now();
+        int age = Period.between(birthDate, today).getYears();
 
         if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
             return "Email không hợp lệ!";
         }
+        if(dao.findByEmail(email)!=null){
+            return "Email bị trùng!";
+        }
+
         if (fullname == null || fullname.trim().isEmpty()) {
             return "Họ và tên không được để trống!";
         }
@@ -82,19 +113,28 @@ public class RegisterAccount extends HttpServlet {
         if (gender == null || !(gender.equalsIgnoreCase("male") || gender.equalsIgnoreCase("female"))) {
             return "Giới tính không hợp lệ!";
         }
+        if (age < 18) {
+            return "Bạn chưa đủ 18 tuổi!";
+        }
         if (address == null || address.trim().isEmpty()) {
             return "Địa chỉ không được để trống!";
         }
         if (studentID == null || studentID.trim().isEmpty()) {
             return "Mã sinh viên không được để trống!";
         }
-        if (dob == null) {
-            return "Ngày sinh không hợp lệ!";
-        }
         if (phone == null || !phone.matches("^[0-9]{9,11}$")) {
             return "Số điện thoại phải từ 9-11 chữ số!";
         }
         return null;
+    }
+
+    private String generateNumericToken(int length) {
+        SecureRandom random = new SecureRandom();
+        StringBuilder token = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            token.append(random.nextInt(10));
+        }
+        return token.toString();
     }
 
 }

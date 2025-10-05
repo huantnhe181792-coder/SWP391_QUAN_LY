@@ -4,14 +4,15 @@
  */
 package com.mycompany.swp391.controller.admin;
 
+
+import com.fall25.sp.swp.quanly.entity.Account;
+import com.mycompany.swp391.entity.AccountClub;
+import com.fall25.sp.swp.quanly.entity.Club;
 import com.mycompany.swp391.config.GlobalConfig;
 import com.mycompany.swp391.dal.implement.AccountClubDAO;
 import com.mycompany.swp391.dal.implement.AccountDAO;
 import com.mycompany.swp391.dal.implement.ClubDAO;
-import com.mycompany.swp391.entity.Account;
-import com.mycompany.swp391.entity.AccountClub;
-import com.mycompany.swp391.entity.Club;
-import com.mycompany.swp391.utils.EmailUtils;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -27,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import utils.EmailUtils;
 
 /**
  *
@@ -53,7 +55,12 @@ public class ManagerAccountServlet extends HttpServlet {
       throws ServletException, IOException {
     String action = request.getParameter("action");
     switch (action) {
-      
+      case "list-account":
+        viewListAccount(request, response);
+        break;
+      case "account-detail":
+        viewAccoutDetail(request, response);
+        break;
       case "account-update":
         updateAccount(request, response);
         break;
@@ -84,6 +91,31 @@ public class ManagerAccountServlet extends HttpServlet {
     }
   }
 
+  private void viewListAccount(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+    // gọi tới hàm findAll() của AccountDAO
+    List<Account> listAccount = accountDAO.findAll();
+    // set list vào request
+    request.setAttribute("listAccount", listAccount);
+    request.getRequestDispatcher(URL_LIST_ACCOUNT).forward(request, response);
+  }
+
+  private void viewAccoutDetail(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+    Integer id = Integer.parseInt(request.getParameter("id"));
+    // find account by ID
+    Account account = accountDAO.findById(id);
+    // Tim cac cau lac bo ma tk nay dang tham gia
+    List<AccountClub> listAccountClubById = accountClubDao.findByAccountId(id);
+    // lấy ra các CLB
+    List<Club> listClub = clubDao.findAll();
+    // navigate
+    request.setAttribute(GlobalConfig.SESSION_ACCOUNT, account);
+    request.setAttribute("listAccountClubById", listAccountClubById);
+    request.setAttribute("listClub", listClub);
+    request.setAttribute("typeOfAction", "view");
+    request.getRequestDispatcher(URL_ACCOUNT).forward(request, response);
+  }
 
   private void updateAccount(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
