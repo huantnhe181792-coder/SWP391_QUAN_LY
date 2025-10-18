@@ -4,12 +4,9 @@
  */
 package com.mycompany.swp391.dal.implement;
 
-import com.fall25.sp.swp.quanly.dal.DBContext;
-import com.fall25.sp.swp.quanly.dal.I_DAO;
-import com.fall25.sp.swp.quanly.entity.Event;
 import com.mycompany.swp391.dal.DBContext;
 import com.mycompany.swp391.dal.I_DAO;
-import jakarta.enterprise.event.Event;
+import com.mycompany.swp391.entity.Event;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -144,7 +141,7 @@ public class EventDAO extends DBContext implements I_DAO<Event> {
 
     @Override
     public Event getFromResultSet(ResultSet resultSet) throws SQLException {
-        Event event = new Event();
+        Event event = new Event() {};
         event.setId(resultSet.getInt("id"));
         event.setArea(resultSet.getString("area"));
         event.setClub_id(resultSet.getInt("club_id"));
