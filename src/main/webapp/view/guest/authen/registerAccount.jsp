@@ -116,6 +116,9 @@
         .error-alert { margin-top: 16px; background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; padding: 10px 12px; border-radius: 10px; font-size: 14px; }
         .error-alert:empty { display: none; }
 
+        .field-error { margin-top: 6px; color: #c62828; font-size: 13px; }
+        .input-group.invalid input { border-color: #c62828; box-shadow: 0 0 0 4px rgba(198,40,40,0.15); }
+
         @media (max-width: 960px) {
             .container { width: 100%; grid-template-columns: 1fr; min-height: unset; }
             .brand-side { padding: 32px 28px; }
@@ -145,9 +148,10 @@
         <div class="form-wrapper">
             <h2>Đăng Ký</h2>
             <form id="registerForm" method="post" action="${pageContext.request.contextPath}/registerAccount" onsubmit="handleRegisterSubmit(event)">
-                <div class="input-group">
+                <div class="input-group" id="emailGroup">
                     <i class="far fa-envelope" aria-hidden="true"></i>
-                    <input type="email" placeholder="Email" name="email" autocomplete="email" value="${param.email}" required>
+                    <input id="email" type="email" placeholder="Email" name="email" autocomplete="email" value="${param.email}" required pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$" title="Vui lòng nhập đúng định dạng email, ví dụ: name@example.com">
+                    <small id="emailError" class="field-error"></small>
                 </div>
                 <div class="input-group">
                     <i class="far fa-id-card" aria-hidden="true"></i>
@@ -224,7 +228,47 @@
         });
     })();
 
+    function isValidEmail(email) {
+        var re = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+        return re.test(email);
+    }
+
+    (function() {
+        var emailInput = document.getElementById('email');
+        var emailGroup = document.getElementById('emailGroup');
+        var emailError = document.getElementById('emailError');
+        if (!emailInput) return;
+        function showEmailError(msg) {
+            if (emailError) emailError.textContent = msg || '';
+            if (emailGroup) {
+                if (msg) emailGroup.classList.add('invalid'); else emailGroup.classList.remove('invalid');
+            }
+            emailInput.setAttribute('aria-invalid', msg ? 'true' : 'false');
+        }
+        emailInput.addEventListener('input', function() {
+            var v = emailInput.value.trim();
+            if (v === '' || isValidEmail(v)) {
+                showEmailError('');
+            } else {
+                showEmailError('Email không hợp lệ.');
+            }
+        });
+    })();
+
     function handleRegisterSubmit(e) {
+        var emailInput = document.getElementById('email');
+        var emailGroup = document.getElementById('emailGroup');
+        var emailError = document.getElementById('emailError');
+        if (emailInput) {
+            var v = emailInput.value.trim();
+            if (!isValidEmail(v)) {
+                e.preventDefault();
+                if (emailError) emailError.textContent = 'Email không hợp lệ.';
+                if (emailGroup) emailGroup.classList.add('invalid');
+                emailInput.focus();
+                return;
+            }
+        }
         var btn = document.getElementById('registerBtn');
         if (btn) {
             btn.classList.add('loading');
