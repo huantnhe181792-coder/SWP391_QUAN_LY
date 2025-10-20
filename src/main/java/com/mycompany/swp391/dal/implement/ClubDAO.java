@@ -4,11 +4,9 @@
  */
 package com.mycompany.swp391.dal.implement;
 
-
 import com.mycompany.swp391.dal.DBContext;
 import com.mycompany.swp391.dal.I_DAO;
 import com.mycompany.swp391.entity.Club;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -194,11 +192,150 @@ public class ClubDAO extends DBContext implements I_DAO<Club> {
     }
     return club;
   }
-  
-    public static void main(String[] args) {
-        for(Club club : new ClubDAO().findAll()){
-            System.out.println(club.toString());
-        }
+
+  public List<Club> findRecordPerPage(int i, Integer limit) {
+    List<Club> list = new ArrayList<>();
+    String sql = "SELECT *\n"
+        + "FROM club\n"
+        + "ORDER BY id DESC\n"
+        + "LIMIT ? OFFSET ?;";
+    // Tính số bản ghi cần bỏ qua
+    Integer recordOffset = (i - 1) * limit;
+    try {
+      connection = getConnection();
+      statement = connection.prepareStatement(sql);
+      statement.setInt(1, limit);
+      statement.setInt(2, recordOffset);
+
+      resultSet = statement.executeQuery();
+      while (resultSet.next()) {
+        list.add(getFromResultSet(resultSet));
+      }
+    } catch (SQLException e) {
+      System.out.println(e);
+    } finally {
+      closeResources();
     }
+    return list;
+  }
+
+  public List<Club> filter(String name, String status, Integer categoryId, Integer i, Integer limit) {
+    List<Club> list = new ArrayList<>();
+    StringBuilder sql = new StringBuilder();
+    sql.append("SELECT c.*\n"
+        + "FROM club c\n"
+        + "WHERE 1 = 1");
+
+    if (name != null && !name.isEmpty()) {
+      sql.append(" AND c.name LIKE ?");
+    }
+    if (status != null && !status.isEmpty()) {
+      sql.append(" AND c.status LIKE ?");
+    }
+    if (categoryId != null && categoryId > 0) {
+      sql.append(" AND c.category_id = ?");
+    }
+
+    // Thêm sắp xếp mới nhất lên đầu
+    sql.append(" ORDER BY c.id DESC");
+
+    // Thêm phân trang
+    sql.append(" LIMIT ? OFFSET ?");
+    // Tính số bản ghi cần bỏ qua
+    Integer recordOffset = (i - 1) * limit;
+    try {
+      connection = getConnection();
+      statement = connection.prepareStatement(sql.toString());
+      // Khởi tạo 1 bien index de chay theo cac bien
+      int index = 1;
+      if (name != null && !name.isEmpty()) {
+        statement.setString(index++, "%" + name + "%");
+      }
+      if (status != null && !status.isEmpty()) {
+        statement.setString(index++, "%" + status + "%");
+      }
+      if (categoryId != null && categoryId > 0) {
+        statement.setInt(index++, categoryId);
+      }
+      statement.setInt(index++, limit);
+      statement.setInt(index, recordOffset);
+
+      resultSet = statement.executeQuery();
+      while (resultSet.next()) {
+        list.add(getFromResultSet(resultSet));
+      }
+    } catch (SQLException e) {
+      System.out.println(e);
+    } finally {
+      closeResources();
+    }
+    return list;
+  }
+
+  public List<Club> filterAll(String name, String status, Integer categoryId) {
+    List<Club> list = new ArrayList<>();
+    StringBuilder sql = new StringBuilder();
+    sql.append("SELECT c.*\n"
+        + "FROM club c\n"
+        + "WHERE 1 = 1");
+
+    if (name != null && !name.isEmpty()) {
+      sql.append(" AND c.name LIKE ?");
+    }
+    if (status != null && !status.isEmpty()) {
+      sql.append(" AND c.status LIKE ?");
+    }
+    if (categoryId != null && categoryId > 0) {
+      sql.append(" AND c.category_id = ?");
+    }
+    try {
+      connection = getConnection();
+      statement = connection.prepareStatement(sql.toString());
+      // Khởi tạo 1 bien index de chay theo cac bien
+      int index = 1;
+      if (name != null && !name.isEmpty()) {
+        statement.setString(index++, "%" + name + "%");
+      }
+      if (status != null && !status.isEmpty()) {
+        statement.setString(index++, "%" + status + "%");
+      }
+      if (categoryId != null && categoryId > 0) {
+        statement.setInt(index++, categoryId);
+      }
+
+      resultSet = statement.executeQuery();
+      while (resultSet.next()) {
+        list.add(getFromResultSet(resultSet));
+      }
+    } catch (SQLException e) {
+      System.out.println(e);
+    } finally {
+      closeResources();
+    }
+    return list;
+  }
+
+  public Club findLastId() {
+    Club club = null;
+    try {
+      connection = getConnection();
+      String sql = "SELECT * FROM club ORDER BY id DESC LIMIT 1";
+      statement = connection.prepareStatement(sql);
+      resultSet = statement.executeQuery();
+      if (resultSet.next()) {
+        club = getFromResultSet(resultSet);
+      }
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    } finally {
+      closeResources();
+    }
+    return club;
+  }
+
+  public static void main(String[] args) {
+    ClubDAO clubDAO = new ClubDAO();
+    System.out.println(clubDAO.filter("", "active", 1, 1, 10).size());
+  }
 
 }
