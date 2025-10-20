@@ -3,26 +3,26 @@ package com.mycompany.swp391.controller.authen;
 
 
 
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.SecureRandom;
+import java.util.Base64;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+
 //import com.fall25.sp.swp.quanly.entity.AccountClub;
 //import com.fall25.sp.swp.quanly.entity.Club;
 import com.mycompany.swp391.config.GlobalConfig;
 import com.mycompany.swp391.dal.implement.AccountDAO;
 import com.mycompany.swp391.entity.Account;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
