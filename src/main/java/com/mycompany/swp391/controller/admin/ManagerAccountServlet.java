@@ -4,17 +4,15 @@
  */
 package com.mycompany.swp391.controller.admin;
 
-
-
-import com.mycompany.swp391.entity.Account;
-import com.mycompany.swp391.entity.AccountClub;
-
 import com.mycompany.swp391.config.GlobalConfig;
 import com.mycompany.swp391.dal.implement.AccountClubDAO;
 import com.mycompany.swp391.dal.implement.AccountDAO;
 import com.mycompany.swp391.dal.implement.ClubDAO;
-
+import com.mycompany.swp391.entity.Account;
+import com.mycompany.swp391.entity.AccountClub;
 import com.mycompany.swp391.entity.Club;
+import com.mycompany.swp391.utils.EmailUtils;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -30,7 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-//import utils.EmailUtils;
 
 /**
  *
@@ -46,7 +43,7 @@ public class ManagerAccountServlet extends HttpServlet {
   AccountDAO accountDAO = new AccountDAO();
   AccountClubDAO accountClubDao = new AccountClubDAO();
   ClubDAO clubDao = new ClubDAO();
-//  EmailUtils emailUtils = new EmailUtils();
+  EmailUtils emailUtils = new EmailUtils();
 
   public static final String URL_LIST_ACCOUNT = "view/admin/admin/list-account.jsp";
   public static final String URL_ACCOUNT = "view/admin/admin/account.jsp";
@@ -87,6 +84,9 @@ public class ManagerAccountServlet extends HttpServlet {
         break;
       case "account-add":
         addAccountDoPost(request, response);
+        break;
+      case "filter":
+        filterChanning(request, response);
         break;
       default:
         throw new AssertionError();
@@ -311,7 +311,7 @@ public class ManagerAccountServlet extends HttpServlet {
 
         accountClubDao.insert(accountClub);
         // Goi toi ham thong báo tk được gửi qua email
-//        emailUtils.sendAccountMail(email, email, password);
+        emailUtils.sendAccountMail(email, email, password);
 
         // Chuyển hướng về trang danh sách tài khoản nếu thêm thành công
         List<Account> listAccount = accountDAO.findAll();
@@ -353,6 +353,21 @@ public class ManagerAccountServlet extends HttpServlet {
     } catch (Exception e) {
       throw new RuntimeException("Lỗi mã hoá mật khẩu", e);
     }
+  }
+
+  private void filterChanning(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    String name = request.getParameter("name");
+    String email = request.getParameter("email");
+    String status = request.getParameter("status");
+    //Gọi tới accountDAO để filter 
+    List<Account> listAccount = accountDAO.filter(name , email, status);
+    //Gui du lieu cu ve
+    request.setAttribute("name", name);
+    request.setAttribute("email", email);
+    request.setAttribute("status", status);
+    // set list vào request
+    request.setAttribute("listAccount", listAccount);
+    request.getRequestDispatcher(URL_LIST_ACCOUNT).forward(request, response);
   }
 
 }
