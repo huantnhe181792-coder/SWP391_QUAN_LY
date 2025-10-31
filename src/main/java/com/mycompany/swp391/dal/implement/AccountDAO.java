@@ -264,17 +264,50 @@ public class AccountDAO extends DBContext implements I_DAO<Account> {
     return result;
   }
 
-  public static void main(String[] args) {
-    Account ac = new Account();
-    AccountDAO acdao = new AccountDAO();
-    ac.setEmail("anhpld@gmail.com");
-    ac.setFullname("Duc Anh");
-    ac.setAddress("HANOI");
-    ac.setGender("male");
-    ac.setPassword(LoginServlet.hashPassword("12345"));
-    ac.setStudent_id("SE05018");
-    ac.setStatus("active");
-    System.out.println(acdao.insert(ac));
+  public List<Account> filter(String name, String email, String status) {
+    List<Account> list = new ArrayList<>();
+    StringBuilder sql = new StringBuilder();
+    sql.append("SELECT c.*\n"
+            + "FROM account c\n"
+            + "WHERE 1 = 1");
+
+    if (name != null && !name.isEmpty()) {
+      sql.append(" AND c.fullname LIKE ?");
+    }
+    if (email != null && !email.isEmpty()) {
+      sql.append(" AND c.email LIKE ?");
+    }
+    if (status != null && !status.isEmpty()) {
+      sql.append(" AND c.status = ?");
+    }
+
+    // Thêm sắp xếp mới nhất lên đầu
+    sql.append(" ORDER BY c.id DESC");
+    try {
+      connection = getConnection();
+      statement = connection.prepareStatement(sql.toString());
+      // Khởi tạo 1 bien index de chay theo cac bien
+      int index = 1;
+      if (name != null && !name.isEmpty()) {
+        statement.setString(index++, "%" + name + "%");
+      }
+      if (email != null && !email.isEmpty()) {
+        statement.setString(index++, "%" + email + "%");
+      }
+      if (status != null && !status.isEmpty()) {
+        statement.setString(index,  status );
+      }
+
+      resultSet = statement.executeQuery();
+      while (resultSet.next()) {
+        list.add(getFromResultSet(resultSet));
+      }
+    } catch (Exception e) {
+      System.out.println(e);
+    } finally {
+      closeResources();
+    }
+    return list;
   }
 
   public Account findLastId() {

@@ -5,6 +5,7 @@
 package com.mycompany.swp391.entity;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,12 +23,13 @@ import lombok.ToString;
 @Setter
 public class Event {
     private Integer id;
-    private String area;
+    private String title;
+    private int area_id;
     private Integer club_id;
     private String status;
     private String description;
-    private Date start;
-    private Date end;
+    private Timestamp start;
+    private Timestamp end;
     private Date created_at;
     private Date updated_at;
     

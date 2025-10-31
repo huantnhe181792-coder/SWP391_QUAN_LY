@@ -291,7 +291,7 @@ public class ClubServlet extends HttpServlet {
     clubUpdate.setStatus(status);
     // Gửi thông báo qua mail của trưởng câu lạc bộ
     emailUtils.sendStatusForClub(email, status, reason);
-      viewListClub(request, response);
+    viewListClub(request, response);
   }
   
 }

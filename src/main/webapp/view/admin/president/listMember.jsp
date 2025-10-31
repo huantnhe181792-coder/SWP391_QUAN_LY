@@ -9,6 +9,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!doctype html>
 <html class="no-js" lang="">
 
@@ -68,7 +69,7 @@
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h3>All Students Data</h3>
+                            <h3>Thành viên CLB</h3>
                         </div>
                     </div>
                     <!--Form Search-->
@@ -94,71 +95,75 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th>Role</th>
-                                <th>StudentID</th>
-                                <th>Address</th>
-                                <th>Date Of Birth</th>
-                                <th>Phone</th>
+                                <th>Tên</th>
+                                <th>Giới tính</th>
+                                <th>Chức vụ</th>
+                                <th>Mã sinh viên</th>
+                                <th>Địa chỉ</th>
+                                <th>Ngày sinh</th>
+                                <th>Số điện thoại</th>
                                 <th>E-mail</th>
-                                <th>Status</th>
-                                <th></th>
+                                <th>Trạng thái</th>
+                                <th>Hành động</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach var="account" items="${listAccount}">
-                                <tr>
-                                    <td>${account.id}</td>
-                                    <td>${account.fullname}</td>
-                                    <td>${account.gender}</td>
-                                    <td>${account.role}</td>
-                                    <td>${account.student_id}</td>
-                                    <td>${account.address}</td>
-                                    <td>${account.bod}</td>
-                                    <td>${account.phone}</td>
-                                    <td>${account.email}</td>
-                                    <td>
-                                        <c:choose>
-                                            <c:when test="${account.status == 'active'}">
-                                  <span style="color: white;
-                                        padding: 5px 10px;
-                                        background-color: #9FD702;
-                                        font-weight: 500;
-                                        border-radius: 10px;
-                                        ">
-                                    Active
-                                  </span>
-                                            </c:when>
-                                            <c:otherwise>
-                                  <span style="color: white;
-                                        padding: 5px 10px;
-                                        background-color: #DE3202;
-                                        font-weight: 500;
-                                        border-radius: 10px;
-                                        ">Banned</span>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                <span class="flaticon-more-button-of-three-dots"></span>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item"
-                                                   href="${pageContext.request.contextPath}/manager-account?action=account-detail&id=${account.id}"><i
-                                                        class="fas fa-eye text-orange-peel"></i>View Detail</a>
-                                                <a class="dropdown-item"
-                                                   href="${pageContext.request.contextPath}/manager-account?action=account-update&id=${account.id}"><i
-                                                        class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
-                                                <a class="dropdown-item" href="javascript:void(0);"
-                                                   onclick="confirmDelete(${account.id});"><i
-                                                        class="fas fa-times text-orange-red"></i>Delete</a>
+                            <c:forEach var="account" items="${listAccount}" varStatus="st">
+                                <c:if test="${accountRoles[account.id] eq 'head' or accountRoles[account.id] eq 'member'}">
+                                    <tr>
+                                        <td>${st.index+1}</td>
+                                        <td>${account.fullname}</td>
+                                        <td>${account.gender eq 'male'? "Nam" : account.gender eq 'female'? "Nữ":"Khác"}</td>
+                                        <td>${accountRoles[account.id] eq 'head'?"Trưởng ban":"Thành viên"}</td>
+                                        <td>${account.student_id}</td>
+                                        <td>${account.address}</td>
+                                        <td>
+                                            <fmt:formatDate value="${account.bod}" pattern="dd/MM/yyyy" />
+                                        </td>
+                                        <td>${account.phone}</td>
+                                        <td>${account.email}</td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${account.status == 'active'}">
+                                                                <span style="color: white;
+                                                                      padding: 5px 10px;
+                                                                      background-color: #9FD702;
+                                                                      font-weight: 500;
+                                                                      border-radius: 10px;
+                                                                      ">
+                                                                    Hoạt động
+                                                                </span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                                <span style="color: white;
+                                                                      padding: 5px 10px;
+                                                                      background-color: #DE3202;
+                                                                      font-weight: 500;
+                                                                      border-radius: 10px;
+                                                                      ">Dừng hoạt động</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                    <span class="flaticon-more-button-of-three-dots"></span>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a class="dropdown-item"
+                                                       href="${pageContext.request.contextPath}/manager-account?action=account-detail&id=${account.id}"><i
+                                                            class="fas fa-eye text-orange-peel"></i>View Detail</a>
+                                                    <a class="dropdown-item"
+                                                       href="${pageContext.request.contextPath}/manager-account?action=account-update&id=${account.id}"><i
+                                                            class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"
+                                                       onclick="confirmDelete(${account.id});"><i
+                                                            class="fas fa-times text-orange-red"></i>Delete</a>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
+                                </c:if>
                             </c:forEach>
                             </tbody>
                         </table>
@@ -195,7 +200,6 @@
             <!-- Student Table Area End Here -->
 
             <!--Footer-->
-            <jsp:include page="../common/footer.jsp"></jsp:include>
         </div>
     </div>
     <!-- Page Area End Here -->
@@ -234,7 +238,7 @@
                 message: "${message}",
                 position: 'topRight',
                 timeout: 5000,
-                backgroundColor:"#d4edda"
+                backgroundColor: "#d4edda"
             });
         });
     </script>
