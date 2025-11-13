@@ -108,13 +108,13 @@
                                     </div>
                                     <div class="col-xl-6 col-lg-6 col-12 form-group">
                                         <label>Ngày bắt đầu</label>
-                                        <input type="datetime-local" name="start" class="form-control"
-                                               value="<fmt:formatDate value="${event.start}" pattern="yyyy-MM-dd'T'HH:mm" />">
+                                        <input type="date" name="start" class="form-control"
+                                               value="<fmt:formatDate value="${event.start}" pattern="yyyy-MM-dd" />">
                                     </div>
                                     <div class="col-xl-6 col-lg-6 col-12 form-group">
                                         <label>Ngày kết thúc</label>
-                                        <input type="datetime-local" name="end" class="form-control"
-                                               value="<fmt:formatDate value="${event.end}" pattern="yyyy-MM-dd'T'HH:mm" />">
+                                        <input type="date" name="end" class="form-control"
+                                               value="<fmt:formatDate value="${event.end}" pattern="yyyy-MM-dd" />">
                                     </div>
 
                                 </c:when>
@@ -134,12 +134,12 @@
                                     <div class="col-xl-6 col-lg-6 col-12 form-group">
                                         <label>Ngày bắt đầu</label>
                                         <input type="text" class="form-control"
-                                               value="<fmt:formatDate value="${event.start}" pattern="dd/MM/yyyy HH:mm" />" readonly>
+                                               value="<fmt:formatDate value="${event.start}" pattern="dd/MM/yyyy" />" readonly>
                                     </div>
                                     <div class="col-xl-6 col-lg-6 col-12 form-group">
                                         <label>Ngày kết thúc</label>
                                         <input type="text" class="form-control"
-                                               value="<fmt:formatDate value="${event.end}" pattern="dd/MM/yyyy HH:mm" />" readonly>
+                                               value="<fmt:formatDate value="${event.end}" pattern="dd/MM/yyyy" />" readonly>
                                     </div>
                                 </c:otherwise>
                             </c:choose>
@@ -333,6 +333,127 @@
                 <!-- Participants End Here -->
             </div>
             <!-- Members Section End Here -->
+            <!-- Request Join Event Section Start Here -->
+            <div class="row">
+                <!-- Pending Requests Start Here -->
+                <div class="col-lg-6">
+                    <div class="card height-auto">
+                        <div class="card-body">
+                            <div class="heading-layout1">
+                                <div class="item-title">
+                                    <h3>Danh sách xin tham gia sự kiện</h3>
+                                    <span class="badge badge-warning">${fn:length(pendingRequests)}</span>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table display data-table text-nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Họ tên</th>
+                                        <th>Mã SV</th>
+                                        <th>Ngày gửi</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:if test="${not empty pendingRequests}">
+                                        <c:forEach var="request" items="${pendingRequests}" varStatus="status">
+                                            <c:set var="account" value="${requestAccountMap[request.id]}"/>
+                                            <tr>
+                                                <td>${status.index + 1}</td>
+                                                <td>${account.fullname}</td>
+                                                <td>${account.student_id}</td>
+                                                <td>
+                                                    <fmt:formatDate value="${request.created_at}" pattern="dd/MM/yyyy HH:mm" />
+                                                </td>
+                                                <td>
+                                                    <div class="dropdown">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                            <span class="flaticon-more-button-of-three-dots"></span>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                            <a class="dropdown-item" href="#"
+                                                               onclick="showRequestDetail(${request.id}, '${account.fullname}', '${account.student_id}', '${account.email}', '${account.phone}', 'pending')">
+                                                                <i class="fas fa-eye text-dark-pastel-green"></i>Xem chi tiết
+                                                            </a>
+                                                            <a class="dropdown-item" href="${pageContext.request.contextPath}/eventDetail?action=approveRequest&requestId=${request.id}&eventId=${event.id}">
+                                                                <i class="fas fa-check text-success"></i>Duyệt
+                                                            </a>
+                                                            <a class="dropdown-item" href="${pageContext.request.contextPath}/eventDetail?action=rejectRequest&requestId=${request.id}&eventId=${event.id}">
+                                                                <i class="fas fa-times text-danger"></i>Từ chối
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </c:if>
+                                    <c:if test="${empty pendingRequests}">
+                                        <tr>
+                                            <td colspan="5" class="text-center">Không có yêu cầu tham gia nào đang chờ duyệt</td>
+                                        </tr>
+                                    </c:if>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Pending Requests End Here -->
+
+                <!-- Approved Requests Start Here -->
+                <div class="col-lg-6">
+                    <div class="card height-auto">
+                        <div class="card-body">
+                            <div class="heading-layout1">
+                                <div class="item-title">
+                                    <h3>Đã duyệt tham gia sự kiện</h3>
+                                    <span class="badge badge-success">${fn:length(approvedRequests)}</span>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table display data-table text-nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Họ tên</th>
+                                        <th>Mã SV</th>
+                                        <th>Ngày duyệt</th>
+                                        <th>Trạng thái</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:if test="${not empty approvedRequests}">
+                                        <c:forEach var="request" items="${approvedRequests}" varStatus="status">
+                                            <c:set var="account" value="${requestAccountMap[request.id]}"/>
+                                            <tr>
+                                                <td>${status.index + 1}</td>
+                                                <td>${account.fullname}</td>
+                                                <td>${account.student_id}</td>
+                                                <td>
+                                                    <fmt:formatDate value="${request.created_at}" pattern="dd/MM/yyyy HH:mm" />
+                                                </td>
+                                                <td>
+                                                    <span class="badge badge-success">Đã duyệt</span>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </c:if>
+                                    <c:if test="${empty approvedRequests}">
+                                        <tr>
+                                            <td colspan="5" class="text-center">Chưa có yêu cầu nào được duyệt</td>
+                                        </tr>
+                                    </c:if>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Approved Requests End Here -->
+            </div>
+            <!-- Request Join Event Section End Here -->
         </div>
     </div>
     <!-- Page Area End Here -->
@@ -405,6 +526,44 @@
         </div>
     </div>
 </div>
+<!-- Modal Chi Tiết Request -->
+<div class="modal fade" id="requestDetailModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chi tiết yêu cầu tham gia</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label><strong>Họ và tên:</strong></label>
+                    <p id="modalFullname"></p>
+                </div>
+                <div class="form-group">
+                    <label><strong>Mã sinh viên:</strong></label>
+                    <p id="modalStudentId"></p>
+                </div>
+                <div class="form-group">
+                    <label><strong>Email:</strong></label>
+                    <p id="modalEmail"></p>
+                </div>
+                <div class="form-group">
+                    <label><strong>Số điện thoại:</strong></label>
+                    <p id="modalPhone"></p>
+                </div>
+                <div class="form-group">
+                    <label><strong>Trạng thái:</strong></label>
+                    <p id="modalStatus"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- jquery-->
 <script src="${pageContext.request.contextPath}/admin/js/jquery-3.3.1.min.js"></script>
@@ -435,8 +594,77 @@
         document.getElementById('editTaskDescription').value = taskDescription;
         $('#editModal').modal('show');
     }
+
+    // Hiển thị chi tiết request
+    function showRequestDetail(requestId, fullname, studentId, email, phone, status) {
+        document.getElementById('modalFullname').textContent = fullname || 'Chưa có thông tin';
+        document.getElementById('modalStudentId').textContent = studentId || 'Chưa có thông tin';
+        document.getElementById('modalEmail').textContent = email || 'Chưa có thông tin';
+        document.getElementById('modalPhone').textContent = phone || 'Chưa có thông tin';
+
+        var statusText = '';
+        var statusClass = '';
+        if (status === 'pending') {
+            statusText = 'Chờ duyệt';
+            statusClass = 'badge badge-warning';
+        } else if (status === 'active') {
+            statusText = 'Đã duyệt';
+            statusClass = 'badge badge-success';
+        } else {
+            statusText = status;
+            statusClass = 'badge badge-secondary';
+        }
+
+        document.getElementById('modalStatus').innerHTML = '<span class="' + statusClass + '">' + statusText + '</span>';
+        $('#requestDetailModal').modal('show');
+    }
 </script>
-<%-- client-side blocked event validation removed; validation is handled server-side --%>
+<script>
+    const blockedEvents = [
+        <c:forEach var="e" items="${blockedEvents}">
+        {
+            areaId: ${e.area_id},
+            start: "${e.start}",
+            end: "${e.end}"
+        }<c:if test="${!fn:contains(e, blockedEvents[blockedEvents.size()-1])}">,</c:if>
+        </c:forEach>
+    ];
+
+    const areaSelect = document.querySelector('select[name="area"]');
+    const startInput = document.querySelector('input[name="start_at"]');
+    const endInput = document.querySelector('input[name="end_at"]');
+
+    areaSelect.addEventListener('change', () => {
+        const selectedArea = parseInt(areaSelect.value);
+        const nowBlocked = blockedEvents.filter(e => e.areaId === selectedArea);
+
+        if (nowBlocked.length > 0) {
+            // lấy min và max của các khoảng bị chặn
+            const minDate = new Date(Math.min(...nowBlocked.map(e => new Date(e.start).getTime())));
+            const maxDate = new Date(Math.max(...nowBlocked.map(e => new Date(e.end).getTime())));
+
+            // disable khoảng thời gian bị trùng
+            startInput.min = new Date().toISOString().slice(0, 16);
+            startInput.addEventListener('input', () => {
+                const val = new Date(startInput.value);
+                if (val >= minDate && val <= maxDate) {
+                    alert("Khoảng thời gian này đã có sự kiện tại địa điểm này!");
+                    startInput.value = "";
+                }
+            });
+
+            endInput.addEventListener('input', () => {
+                const val = new Date(endInput.value);
+                if (val >= minDate && val <= maxDate) {
+                    alert("Khoảng thời gian này đã có sự kiện tại địa điểm này!");
+                    endInput.value = "";
+                }
+            });
+        } else {
+            startInput.min = "";
+        }
+    });
+</script>
 </body>
 
 </html>

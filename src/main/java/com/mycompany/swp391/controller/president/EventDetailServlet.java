@@ -3,10 +3,7 @@ package com.mycompany.swp391.controller.president;
 
 import com.mycompany.swp391.config.GlobalConfig;
 import com.mycompany.swp391.dal.implement.*;
-import com.mycompany.swp391.entity.Account;
-import com.mycompany.swp391.entity.AccountClub;
-import com.mycompany.swp391.entity.Area;
-import com.mycompany.swp391.entity.Event;
+import com.mycompany.swp391.entity.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -38,13 +35,24 @@ public class EventDetailServlet extends HttpServlet {
             case "deleteTask":
                 deleteTask(req, resp);
                 break;
+            case "approveRequest":
+                approveRequest(req, resp);
+                break;
             default:
                 req.getRequestDispatcher("view/admin/president/eventDetail.jsp").forward(req, resp);
                 break;
         }
 
     }
-    
+
+    protected void approveRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Integer requestId = Integer.parseInt(req.getParameter("requestId"));
+        boolean rl = new RequestJoinEventDAO().updateStatus(requestId,"active");
+        if (rl){
+            viewDetail(req, resp);
+        }
+    }
+
     protected void deleteTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Integer taskId = Integer.parseInt(req.getParameter("taskId"));
         boolean success = new TaskDAO().deleteTaskById(taskId);
@@ -112,15 +120,47 @@ public class EventDetailServlet extends HttpServlet {
         List<Area> listArea = areaDAO.findAll();
         req.setAttribute("listArea", listArea);
 
-        // client-side blocked events are no longer used; validation is server-side
+        List<Event> blockedEvents = eventDAO.getActiveOrPendingEvents();
+        req.setAttribute("blockedEvents", blockedEvents);
+
+        // Lấy danh sách request join event
+        RequestJoinEventDAO requestJoinEventDAO = new RequestJoinEventDAO();
+        List<RequestJoinEvent> listJoinEvent = requestJoinEventDAO.findByEventId(eventId);
+
+        // Tạo map để liên kết request với account
+        Map<Integer, Account> requestAccountMap = new HashMap<>();
+        Map<Integer, RequestJoinEvent> requestMap = new HashMap<>();
+
+        // Phân loại request theo status
+        List<RequestJoinEvent> pendingRequests = new ArrayList<>();
+        List<RequestJoinEvent> approvedRequests = new ArrayList<>();
+
+        for (RequestJoinEvent request : listJoinEvent) {
+            Account acc = accountDAO.findById(request.getAccountId());
+            if (acc != null) {
+                requestAccountMap.put(request.getId(), acc);
+                requestMap.put(request.getId(), request);
+
+                // Phân loại theo status
+                if ("pending".equals(request.getStatus())) {
+                    pendingRequests.add(request);
+                } else if ("active".equals(request.getStatus())) {
+                    approvedRequests.add(request);
+                }
+            }
+        }
 
         req.setAttribute("event", event);
         req.setAttribute("areaMap", areaMap);
         req.setAttribute("listAccount", listAccount);
         req.setAttribute("accountRoles", accountRoles);
         req.setAttribute("tasks", tasks);
-        req.getRequestDispatcher("view/admin/president/eventDetail.jsp").forward(req, resp);
+        req.setAttribute("pendingRequests", pendingRequests);
+        req.setAttribute("approvedRequests", approvedRequests);
+        req.setAttribute("requestAccountMap", requestAccountMap);
+        req.setAttribute("requestMap", requestMap);
 
+        req.getRequestDispatcher("view/admin/president/eventDetail.jsp").forward(req, resp);
     }
 
     @Override
@@ -177,6 +217,7 @@ public class EventDetailServlet extends HttpServlet {
 
         EventDAO eventDAO = new EventDAO();
         Event event = eventDAO.findById(eventId);
+
         Timestamp startDateOld = event.getStart();
         Timestamp endDateOld = event.getEnd();
 
@@ -184,6 +225,13 @@ public class EventDetailServlet extends HttpServlet {
 
         // Lấy thời gian hiện tại
         LocalDateTime now = LocalDateTime.now();
+
+        if(!event.getStatus().equals("pending")){
+            error = "Chỉ được cập nhật các event chưa được duyệt";
+            req.setAttribute("error", error);
+            viewDetail(req, resp);
+            return;
+        }
 
         // Validate 1: Ngày bắt đầu mới không được sớm hơn ngày cũ
         if (startLdt.isBefore(startDateOld.toLocalDateTime())) {
@@ -217,16 +265,7 @@ public class EventDetailServlet extends HttpServlet {
             return;
         }
 
-        // Validate 5: Kiểm tra khoảng cách tối thiểu giữa start và end (ít nhất 1 ngày)
-        long hours = Duration.between(startLdt, endLdt).toHours();
-        if (hours < 24) {
-            error = "Sự kiện phải kéo dài ít nhất 1 ngày";
-            req.setAttribute("error", error);
-            viewDetail(req, resp);
-            return;
-        }
-
-        // Validate 6: Kiểm tra trùng lịch với sự kiện khác trong cùng địa điểm
+        // Validate 5: Kiểm tra trùng lịch với sự kiện khác trong cùng địa điểm
         if (eventDAO.hasOverlappingEvents(area, startTs, endTs, eventId)) {
             error = "Địa điểm này đã có sự kiện khác trong khoảng thời gian này";
             req.setAttribute("error", error);

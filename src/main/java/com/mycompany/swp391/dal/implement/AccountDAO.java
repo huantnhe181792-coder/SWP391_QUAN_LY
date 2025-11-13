@@ -327,4 +327,23 @@ public class AccountDAO extends DBContext implements I_DAO<Account> {
     }
     return account;
   }
+
+  public List<Account> findByStatus(String status) {
+    List<Account> list = new ArrayList<>();
+    try {
+      connection = getConnection();
+      String sql = "SELECT * FROM account WHERE status = ? ORDER BY id DESC";
+      statement = connection.prepareStatement(sql);
+      statement.setString(1, status);
+      resultSet = statement.executeQuery();
+      while (resultSet.next()) {
+        list.add(getFromResultSet(resultSet));
+      }
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    } finally {
+      closeResources();
+    }
+    return list;
+  }
 }

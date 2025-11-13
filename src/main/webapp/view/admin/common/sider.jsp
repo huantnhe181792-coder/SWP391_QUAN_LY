@@ -24,37 +24,41 @@
     <ul class="nav nav-sidebar-menu sidebar-toggle-view">
       <li class="nav-item sidebar-nav-item">
         <a href="${pageContext.request.contextPath}/account" class="nav-link"><i
-                class="flaticon-dashboard"></i><span>My Account</span></a>
+                class="flaticon-dashboard"></i><span>Tài khoản</span></a>
       </li>
       <li class="nav-item sidebar-nav-item">
         <a href="${pageContext.request.contextPath}/change-password" class="nav-link"><i
-                class="flaticon-classmates"></i><span>Change Password</span></a>
+                class="flaticon-classmates"></i><span>Đổi mật khẩu</span></a>
       </li>
 
       <c:choose>
         <c:when test="${sessionScope.account_club.role == 'admin'}">
           <li class="nav-item sidebar-nav-item">
             <a href="${pageContext.request.contextPath}/manager-account?action=list-account" class="nav-link"><i
-                    class="flaticon-multiple-users-silhouette"></i><span>View Accounts</span></a>
+                    class="flaticon-multiple-users-silhouette"></i><span>Danh sách tải khoản</span></a>
           </li>
-          <li class="nav-item sidebar-nav-item">
-            <a href="${pageContext.request.contextPath}/manager-account?action=account-add" class="nav-link"><i
-                    class="flaticon-technological"></i><span>Add Account</span></a>
-          </li>
+<%--          <li class="nav-item sidebar-nav-item">--%>
+<%--            <a href="${pageContext.request.contextPath}/manager-account?action=account-add" class="nav-link"><i--%>
+<%--                    class="flaticon-technological"></i><span>Add Account</span></a>--%>
+<%--          </li>--%>
         </c:when>
         <c:when test="${sessionScope.account_club.role == 'manager'}">
           <li class="nav-item sidebar-nav-item">
             <a href="${pageContext.request.contextPath}/club?action=list-club" class="nav-link"><i
-                    class="flaticon-technological"></i><span>View All Club</span></a>
+                    class="flaticon-technological"></i><span>Danh sách CLB</span></a>
           </li>
           <li class="nav-item sidebar-nav-item">
             <a href="${pageContext.request.contextPath}/club?action=list-club" class="nav-link"><i
-                    class="flaticon-bed"></i><span>View Event Request</span></a>
+                    class="flaticon-bed"></i><span>Danh sách yêu cầu tham gia sự kiện</span></a>
           </li>
           <li class="nav-item sidebar-nav-item">
             <a href="${pageContext.request.contextPath}/manageEventByManager?action=view" class="nav-link"><i
                     class="flaticon-bed"></i><span>Danh sách sự kiện</span></a>
           </li>
+<%--          <li class="nav-item sidebar-nav-item">--%>
+<%--            <a href="${pageContext.request.contextPath}/changePresident?action=viewByManager" class="nav-link"><i--%>
+<%--                    class="flaticon-bed"></i><span>Danh sách yêu cầu đổi trưởng CLB</span></a>--%>
+<%--          </li>--%>
         </c:when>
         <c:when test="${sessionScope.account_club.role == 'president'}">
           <li class="nav-item sidebar-nav-item">
@@ -73,121 +77,14 @@
             <a href="${pageContext.request.contextPath}/changePresident" class="nav-link"><i class="fa-solid fa-calendar"></i>
               <span>Yêu cầu đổi trưởng CLB</span></a>
           </li>
+
+<%--          <li class="nav-item sidebar-nav-item">--%>
+<%--            <a href="${pageContext.request.contextPath}/changePresident?action=view" class="nav-link"><i class="fa-solid fa-calendar"></i>--%>
+<%--              <span>Yêu cầu đổi trưởng CLB</span></a>--%>
+<%--          </li>--%>
         </c:when>
       </c:choose>
 
-
-      <!--            <li class="nav-item sidebar-nav-item">
-            <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Library</span></a>
-            <ul class="nav sub-group-menu">
-              <li class="nav-item">
-                <a href="all-book.html" class="nav-link"><i class="fas fa-angle-right"></i>All
-                  Book</a>
-              </li>
-              <li class="nav-item">
-                <a href="add-book.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
-                  Book</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item sidebar-nav-item">
-            <a href="#" class="nav-link"><i class="flaticon-technological"></i><span>Acconunt</span></a>
-            <ul class="nav sub-group-menu">
-              <li class="nav-item">
-                <a href="all-fees.html" class="nav-link"><i class="fas fa-angle-right"></i>All Fees
-                  Collection</a>
-              </li>
-              <li class="nav-item">
-                <a href="all-expense.html" class="nav-link"><i class="fas fa-angle-right"></i>Expenses</a>
-              </li>
-              <li class="nav-item">
-                <a href="add-expense.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
-                  Expenses</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item sidebar-nav-item">
-            <a href="#" class="nav-link"><i
-                class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
-            <ul class="nav sub-group-menu">
-              <li class="nav-item">
-                <a href="all-class.html" class="nav-link"><i class="fas fa-angle-right"></i>All
-                  Classes</a>
-              </li>
-              <li class="nav-item">
-                <a href="add-class.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
-                  Class</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="all-subject.html" class="nav-link"><i class="flaticon-open-book"></i><span>Subject</span></a>
-          </li>
-          <li class="nav-item">
-            <a href="class-routine.html" class="nav-link"><i class="flaticon-calendar"></i><span>Class
-                Routine</span></a>
-          </li>
-          <li class="nav-item">
-            <a href="student-attendence.html" class="nav-link"><i
-                class="flaticon-checklist"></i><span>Attendence</span></a>
-          </li>
-          <li class="nav-item sidebar-nav-item">
-            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
-            <ul class="nav sub-group-menu">
-              <li class="nav-item">
-                <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
-                  Schedule</a>
-              </li>
-              <li class="nav-item">
-                <a href="exam-grade.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
-                  Grades</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="transport.html" class="nav-link"><i class="flaticon-bus-side-view"></i><span>Transport</span></a>
-          </li>
-          <li class="nav-item">
-            <a href="hostel.html" class="nav-link"><i class="flaticon-bed"></i><span>Hostel</span></a>
-          </li>
-          <li class="nav-item">
-            <a href="notice-board.html" class="nav-link"><i class="flaticon-script"></i><span>Notice</span></a>
-          </li>
-          <li class="nav-item">
-            <a href="messaging.html" class="nav-link"><i class="flaticon-chat"></i><span>Messeage</span></a>
-          </li>
-          <li class="nav-item sidebar-nav-item">
-            <a href="#" class="nav-link"><i class="flaticon-menu-1"></i><span>UI Elements</span></a>
-            <ul class="nav sub-group-menu">
-              <li class="nav-item">
-                <a href="notification-alart.html" class="nav-link"><i class="fas fa-angle-right"></i>Alart</a>
-              </li>
-              <li class="nav-item">
-                <a href="button.html" class="nav-link"><i class="fas fa-angle-right"></i>Button</a>
-              </li>
-              <li class="nav-item">
-                <a href="grid.html" class="nav-link"><i class="fas fa-angle-right"></i>Grid</a>
-              </li>
-              <li class="nav-item">
-                <a href="modal.html" class="nav-link"><i class="fas fa-angle-right"></i>Modal</a>
-              </li>
-              <li class="nav-item">
-                <a href="progress-bar.html" class="nav-link"><i class="fas fa-angle-right"></i>Progress Bar</a>
-              </li>
-              <li class="nav-item">
-                <a href="ui-tab.html" class="nav-link"><i class="fas fa-angle-right"></i>Tab</a>
-              </li>
-              <li class="nav-item">
-                <a href="ui-widget.html" class="nav-link"><i class="fas fa-angle-right"></i>Widget</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="map.html" class="nav-link"><i class="flaticon-planet-earth"></i><span>Map</span></a>
-          </li>
-          <li class="nav-item">
-            <a href="account-settings.html" class="nav-link"><i class="flaticon-settings"></i><span>Account</span></a>
-          </li>-->
     </ul>
   </div>
 </div>

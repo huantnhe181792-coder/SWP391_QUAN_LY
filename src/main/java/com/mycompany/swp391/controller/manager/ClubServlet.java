@@ -106,8 +106,21 @@ public class ClubServlet extends HttpServlet {
         : totalRecord / recordPerPage + 1;
     // lấy ra số bản ghi của trang đẩu tiên
     List<Club> listClub = clubDAO.findRecordPerPage(1, recordPerPage);
+    // Sort newest -> oldest (fallback by id if created_at null)
+    listClub.sort((a, b) -> {
+      java.sql.Date ca = a.getCreated_at();
+      java.sql.Date cb = b.getCreated_at();
+      if (ca == null && cb == null) return Integer.compare(b.getId(), a.getId());
+      if (ca == null) return 1;
+      if (cb == null) return -1;
+      int cmp = cb.compareTo(ca);
+      if (cmp != 0) return cmp;
+      return Integer.compare(b.getId(), a.getId());
+    });
     // Lấy ra danh sách account
     List<Account> listAccount = accountDAO.findAll();
+    // Lấy danh sách account active (để chọn trưởng CLB)
+    List<Account> listActiveAccount = accountDAO.findByStatus("active");
     // lấy ra danh mục các club
     List<CategoryClub> listCategoryClub = categoryClubDAO.findAll();
     // Gui du lieu ve pagination
@@ -118,6 +131,7 @@ public class ClubServlet extends HttpServlet {
     request.setAttribute("listCategoryClub", listCategoryClub);
     request.setAttribute("listClub", listClub);
     request.setAttribute("listAccount", listAccount);
+    request.setAttribute("listActiveAccount", listActiveAccount);
     request.getRequestDispatcher(URL_LIST_CLUB).forward(request, response);
   }
 
@@ -214,13 +228,27 @@ public class ClubServlet extends HttpServlet {
     // Du lieu Club
     // Gọi toi ham filter trong clubDAO
     List<Club> listClub = clubDAO.filter(name, status, categoryId, currentPage, GlobalConfig.RECORD_PER_PAGE);
+    // Sort newest -> oldest (fallback by id if created_at null)
+    listClub.sort((a, b) -> {
+      java.sql.Date ca = a.getCreated_at();
+      java.sql.Date cb = b.getCreated_at();
+      if (ca == null && cb == null) return Integer.compare(b.getId(), a.getId());
+      if (ca == null) return 1;
+      if (cb == null) return -1;
+      int cmp = cb.compareTo(ca);
+      if (cmp != 0) return cmp;
+      return Integer.compare(b.getId(), a.getId());
+    });
     // lay du lieu account và categoryClub
     List<Account> listAccount = accountDAO.findAll();
     List<CategoryClub> listCategoryClub = categoryClubDAO.findAll();
+    // Lấy danh sách account active (để chọn trưởng CLB)
+    List<Account> listActiveAccount = accountDAO.findByStatus("active");
     // Gửi dữ liệu lên trang
     request.setAttribute("listAccount", listAccount);
     request.setAttribute("listCategoryClub", listCategoryClub);
     request.setAttribute("listClub", listClub);
+    request.setAttribute("listActiveAccount", listActiveAccount);
 
     // Gui du lieu cu về
     request.setAttribute("name", name);
@@ -265,8 +293,11 @@ public class ClubServlet extends HttpServlet {
     Integer clubId = Integer.parseInt(request.getParameter("id"));
     Club club = clubDAO.findById(clubId);
     Integer presidentid = club.getPresident_id();
+    
     Account accountPre = accountDAO.findById(presidentid);
+
     CategoryClub categoryClub = categoryClubDAO.findById(club.getCategory_id());
+
     // Lấy số lượng thành viên trong câu lạc bộ
     Integer numberOfClub = accountClubDAO.findByClubId(clubId).size();
     // Lấy số lượng sự kiện trong câu lạc bộ

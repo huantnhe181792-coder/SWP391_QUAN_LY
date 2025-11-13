@@ -1,25 +1,22 @@
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!doctype html>
 <html class="no-js" lang="">
 
-
-<!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/all-student.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 20 Sep 2025 14:36:13 GMT -->
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>AKKHOR | Tất cả sự kiện</title>
+    <title>AKKHOR | Sự kiện của tôi</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/admin/img/favicon.png">
     <!-- Normalize CSS -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/admin//css/normalize.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/normalize.css">
     <!-- Main CSS -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/main.css"> <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/main.css">
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/bootstrap.min.css">
     <!-- Fontawesome CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/admin/css/all.min.css">
@@ -61,18 +58,14 @@
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h3>Tất cả sự kiện</h3>
+                            <h3>Sự kiện của tôi</h3>
                         </div>
                     </div>
-
                     <div class="table-responsive">
                         <table class="table display data-table text-nowrap">
                             <thead>
                             <tr>
                                 <th>STT</th>
-                                <c:if test ="${not empty clubMap}">
-                                    <th>Tên CLB</th>
-                                </c:if>
                                 <th>Tên sự kiện</th>
                                 <th>Địa điểm</th>
                                 <th>Ngày bắt đầu</th>
@@ -86,9 +79,6 @@
                             <c:forEach var="event" items="${listEvent}" varStatus="status">
                                 <tr>
                                     <td>${status.index + 1}</td>
-                                    <c:if test ="${not empty clubMap}">
-                                        <td>${clubMap[event.club_id]}</td>
-                                    </c:if>
                                     <td>${event.title}</td>
                                     <td>
                                         <c:choose>
@@ -101,66 +91,33 @@
                                         </c:choose>
                                     </td>
                                     <td>
-                                        <fmt:formatDate value="${event.start}" pattern="dd/MM/yyyy HH:mm" />
+                                        <fmt:formatDate value="${event.start}" pattern="dd/MM/yyyy" />
                                     </td>
                                     <td>
-                                        <fmt:formatDate value="${event.end}" pattern="dd/MM/yyyy HH:mm" />
+                                        <fmt:formatDate value="${event.end}" pattern="dd/MM/yyyy" />
                                     </td>
                                     <td>
+                                        <!-- Hiển thị span cho manager -->
                                         <c:choose>
-                                            <c:when test="${not empty clubMap}">
-                                                <!-- Có clubMap - hiển thị dropdown có màu -->
-                                                <form action="${pageContext.request.contextPath}/manageEventByManager" method="POST" style="margin: 0; display: inline;">
-                                                    <input type="hidden" name="action" value="updateStatus">
-                                                    <input type="hidden" name="eventId" value="${event.id}">
-                                                    <select name="status" onchange="this.form.submit()"
-                                                            style="padding: 5px 10px; border-radius: 10px; border: none; font-weight: 500; color: white; cursor: pointer; outline: none; min-width: 120px;
-                                                            <c:choose>
-                                                            <c:when test="${event.status == 'active'}">background-color: #9FD702;</c:when>
-                                                            <c:when test="${event.status == 'pending'}">background-color: #FFA500;</c:when>
-                                                            <c:when test="${event.status == 'reject'}">background-color: #DE3202;</c:when>
-                                                            <c:otherwise>background-color: #6c757d;</c:otherwise>
-                                                                    </c:choose>"
-                                                            <c:if test="${event.end lt today}">disabled style="opacity: 0.7; cursor: not-allowed;"</c:if>>
-                                                        <option value="pending"
-                                                                <c:if test="${event.status == 'pending'}">selected</c:if>>
-                                                            Chờ duyệt
-                                                        </option>
-                                                        <option value="active"
-                                                                <c:if test="${event.status == 'active'}">selected</c:if>>
+                                            <c:when test="${event.status == 'active'}">
+                                                        <span style="color: white; padding: 5px 10px; background-color: #9FD702; font-weight: 500; border-radius: 10px;">
                                                             Đã duyệt
-                                                        </option>
-                                                        <option value="reject"
-                                                                <c:if test="${event.status == 'reject'}">selected</c:if>>
+                                                        </span>
+                                            </c:when>
+                                            <c:when test="${event.status == 'pending'}">
+                                                        <span style="color: white; padding: 5px 10px; background-color: #FFA500; font-weight: 500; border-radius: 10px;">
+                                                            Chờ duyệt
+                                                        </span>
+                                            </c:when>
+                                            <c:when test="${event.status == 'reject'}">
+                                                        <span style="color: white; padding: 5px 10px; background-color: #DE3202; font-weight: 500; border-radius: 10px;">
                                                             Từ chối
-                                                        </option>
-                                                    </select>
-                                                </form>
+                                                        </span>
                                             </c:when>
                                             <c:otherwise>
-                                                <!-- Không có clubMap - hiển thị span như cũ -->
-                                                <c:choose>
-                                                    <c:when test="${event.status == 'active'}">
-                                                                    <span style="color: white; padding: 5px 10px; background-color: #9FD702; font-weight: 500; border-radius: 10px;">
-                                                                        Đã duyệt
-                                                                    </span>
-                                                    </c:when>
-                                                    <c:when test="${event.status == 'pending'}">
-                                                                    <span style="color: white; padding: 5px 10px; background-color: #FFA500; font-weight: 500; border-radius: 10px;">
-                                                                        Chờ duyệt
-                                                                    </span>
-                                                    </c:when>
-                                                    <c:when test="${event.status == 'reject'}">
-                                                                    <span style="color: white; padding: 5px 10px; background-color: #DE3202; font-weight: 500; border-radius: 10px;">
-                                                                        Từ chối
-                                                                    </span>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                                    <span style="color: white; padding: 5px 10px; background-color: #6c757d; font-weight: 500; border-radius: 10px;">
-                                                                            ${event.status}
-                                                                    </span>
-                                                    </c:otherwise>
-                                                </c:choose>
+                                                        <span style="color: white; padding: 5px 10px; background-color: #6c757d; font-weight: 500; border-radius: 10px;">
+                                                                ${event.status}
+                                                        </span>
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
@@ -172,34 +129,17 @@
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                                 <span class="flaticon-more-button-of-three-dots"></span>
                                             </a>
-                                            <c:choose>
-                                                <c:when test="${not empty clubMap}">
-                                                    <div class="dropdown-menu dropdown-menu-right">
-
-                                                        <a class="dropdown-item"
-                                                           href="${pageContext.request.contextPath}/eventDetail?action=viewDetail&&eventId=${event.id}">
-                                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Chi tiết
-                                                        </a>
-
-
-                                                    </div>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-
-                                                        <a class="dropdown-item"
-                                                           href="${pageContext.request.contextPath}/eventDetail?action=viewDetail&&eventId=${event.id}">
-                                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Quản lý
-                                                        </a>
-                                                        <c:if test="${event.status eq 'pending'}">
-                                                            <a class="dropdown-item" href="${pageContext.request.contextPath}/manageEvent?action=delete&&eventId=${event.id}">
-                                                                <i class="fas fa-times text-orange-red"></i> Xóa
-                                                            </a>
-                                                        </c:if>
-
-                                                    </div>
-                                                </c:otherwise>
-                                            </c:choose>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item"
+                                                   href="${pageContext.request.contextPath}/eventDetail?action=viewDetail&eventId=${event.id}">
+                                                    <i class="fas fa-cogs text-dark-pastel-green"></i>Quản lý
+                                                </a>
+                                                <c:if test="${event.status eq 'pending'}">
+                                                    <a class="dropdown-item" href="${pageContext.request.contextPath}/manageEvent?action=delete&eventId=${event.id}">
+                                                        <i class="fas fa-times text-orange-red"></i> Xóa
+                                                    </a>
+                                                </c:if>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -235,6 +175,6 @@
 <!-- Data Table Js -->
 <script src="${pageContext.request.contextPath}/admin/js/jquery.dataTables.min.js"></script>
 <!-- Custom Js -->
-<script src="${pageContext.request.contextPath}/admin/js/main.js"></script
+<script src="${pageContext.request.contextPath}/admin/js/main.js"></script>
 </body>
 </html>

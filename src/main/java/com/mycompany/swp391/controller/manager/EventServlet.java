@@ -1,10 +1,11 @@
 package com.mycompany.swp391.controller.manager;
 
 
-
+import com.mycompany.swp391.config.GlobalConfig;
 import com.mycompany.swp391.dal.implement.AreaDAO;
 import com.mycompany.swp391.dal.implement.ClubDAO;
 import com.mycompany.swp391.dal.implement.EventDAO;
+import com.mycompany.swp391.entity.AccountClub;
 import com.mycompany.swp391.entity.Area;
 import com.mycompany.swp391.entity.Club;
 import com.mycompany.swp391.entity.Event;
@@ -13,8 +14,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +57,7 @@ public class EventServlet extends HttpServlet {
         request.setAttribute("listArea", listArea);
         request.setAttribute("areaMap", areaMap);
         request.setAttribute("clubMap", clubMap);
-        request.getRequestDispatcher("view/admin/president/listEvent.jsp").forward(request, response);
+        request.getRequestDispatcher("view/admin/manager/listEvent.jsp").forward(request, response);
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -73,12 +76,9 @@ public class EventServlet extends HttpServlet {
         Event event = eventDAO.findById(eventId);
         String status = request.getParameter("status");
         event.setStatus(status);
-        if(eventDAO.update(event)){
+        if (eventDAO.update(event)) {
             viewList(request, response);
         }
     }
-
-
-
 
 }

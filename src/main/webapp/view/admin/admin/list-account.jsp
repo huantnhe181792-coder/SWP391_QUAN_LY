@@ -61,7 +61,7 @@
         <div class="card-body">
           <div class="heading-layout1">
             <div class="item-title">
-              <h3>All Students Data</h3>
+              <h3>  All Students Data</h3>
             </div>
           </div>
           <!--Form Search-->

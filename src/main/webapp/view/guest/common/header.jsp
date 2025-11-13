@@ -72,9 +72,9 @@
 
               </li>
               <li>
-                <a href="#">Các câu lạc bộ</a>
+                <a href="${pageContext.request.contextPath}/clubsForHome?action=viewClubs">Các câu lạc bộ</a>
               </li>
-              <li>
+              <!-- <li>
                 <a href="#">Sự kiện</a>
               </li>
               <c:choose>
@@ -83,7 +83,7 @@
                     <a href="#">Câu lạc bộ của tôi</a>
                   </li>
                 </c:when>
-              </c:choose>
+              </c:choose> -->
             </ul>
             <!-- mobile-search-area -->
             <div class="d-lg-none d-block">
@@ -175,7 +175,7 @@
               </div>
 
               <div class="dropdown-menu">
-                <a style="color: black" href="${pageContext.request.contextPath}/account">Hồ sơ</a>
+                <a style="color: black" href="${pageContext.request.contextPath}/account">Quản lý</a>
                 <a style="color: black" href="${pageContext.request.contextPath}/logout">Đăng xuất</a>
               </div>
             </div>

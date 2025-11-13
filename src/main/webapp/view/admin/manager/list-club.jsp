@@ -124,7 +124,12 @@
 
                   <div class="col-12-xxxl col-lg-6 col-12 form-group">
                     <label>Trưởng CLB *</label>
-                    <input type="text" placeholder="President" class="form-control" name="presidentId">
+                    <select class="select2" name="presidentId">
+                      <option value="">Please Select</option>
+                      <c:forEach var="acc" items="${listActiveAccount}">
+                        <option value="${acc.id}">${acc.fullname} - ${acc.email}</option>
+                      </c:forEach>
+                    </select>
                   </div>
 
                   <div class="col-12-xxxl col-lg-6 col-12 form-group">

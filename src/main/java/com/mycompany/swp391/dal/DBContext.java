@@ -19,18 +19,31 @@ public class DBContext {
   protected ResultSet resultSet;
   public PreparedStatement statement;
 
-  public DBContext() {
-    try {
-      // Change the username password and url to connect your own database
-      String username = "admin";
-      String password = "12345678";
-      String url = "jdbc:mysql://database-1.cfumgomiyy8m.ap-southeast-1.rds.amazonaws.com:3306/swp391_quan_ly";
-      Class.forName("com.mysql.cj.jdbc.Driver");
-      connection = DriverManager.getConnection(url, username, password);
-    } catch (ClassNotFoundException | SQLException ex) {
-      Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
-    }
-  }
+   public DBContext() {
+     try {
+       // Change the username password and url to connect your own database
+       String username = "admin";
+       String password = "12345678";
+       String url = "jdbc:mysql://database-1.cfumgomiyy8m.ap-southeast-1.rds.amazonaws.com:3306/swp391_quan_ly";
+       Class.forName("com.mysql.cj.jdbc.Driver");
+       connection = DriverManager.getConnection(url, username, password);
+     } catch (ClassNotFoundException | SQLException ex) {
+       Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+     }
+   }
+//  public DBContext() {
+//    try {
+//      // Change the username password and url to connect your own database
+//      String username = "root";
+//      String password = "123456aA@";
+//      String url = "jdbc:mysql://localhost:3306/swp391_quan_ly";
+//      Class.forName("com.mysql.cj.jdbc.Driver");
+//      connection = DriverManager.getConnection(url, username, password);
+//    } catch (ClassNotFoundException | SQLException ex) {
+//      Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+//    }
+//  }
+
 
   public void closeResources() {
     try {
