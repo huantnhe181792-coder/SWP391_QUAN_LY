@@ -3,7 +3,7 @@ package com.mycompany.swp391.controller.authen;
 
 import com.mycompany.swp391.dal.implement.AccountDAO;
 import com.mycompany.swp391.entity.Account;
-import com.mycompany.swp391.util.SendEmail;
+import com.mycompany.swp391.utils.EmailUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
