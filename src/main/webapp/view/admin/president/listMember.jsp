@@ -9,6 +9,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!doctype html>
 <html class="no-js" lang="">
 
@@ -68,97 +69,98 @@
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h3>All Students Data</h3>
+                            <h3>Thành viên CLB</h3>
                         </div>
                     </div>
                     <!--Form Search-->
-                    <form class="mg-b-20">
-                        <div class="row gutters-8">
-                            <div class="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                                <input type="text" placeholder="Search by Role ..." class="form-control">
-                            </div>
-                            <div class="col-4-xxxl col-xl-4 col-lg-3 col-12 form-group">
-                                <input type="text" placeholder="Search by Name ..." class="form-control">
-                            </div>
-                            <div class="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                                <input type="text" placeholder="Search by Email ..." class="form-control">
-                            </div>
-                            <div class="col-1-xxxl col-xl-2 col-lg-3 col-12 form-group">
-                                <button type="submit" class="fw-btn-fill btn-gradient-yellow">SEARCH</button>
-                            </div>
-                        </div>
-                    </form>
+                    <!--                                <form class="mg-b-20">
+                                                        <div class="row gutters-8">
+                                                            <div class="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
+                                                                <input type="text" placeholder="Search by Role ..." class="form-control">
+                                                            </div>
+                                                            <div class="col-4-xxxl col-xl-4 col-lg-3 col-12 form-group">
+                                                                <input type="text" placeholder="Search by Name ..." class="form-control">
+                                                            </div>
+                                                            <div class="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
+                                                                <input type="text" placeholder="Search by Email ..." class="form-control">
+                                                            </div>
+                                                            <div class="col-1-xxxl col-xl-2 col-lg-3 col-12 form-group">
+                                                                <button type="submit" class="fw-btn-fill btn-gradient-yellow">SEARCH</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>-->
                     <!--Form Search-->
                     <div class="table-responsive">
                         <table class="table display data-table text-nowrap">
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th>Role</th>
-                                <th>StudentID</th>
-                                <th>Address</th>
-                                <th>Date Of Birth</th>
-                                <th>Phone</th>
+                                <th>Tên</th>
+                                <th>Giới tính</th>
+                                <th>Chức vụ</th>
+                                <th>Mã sinh viên</th>
+                                <th>Địa chỉ</th>
+                                <th>Ngày sinh</th>
+                                <th>Số điện thoại</th>
                                 <th>E-mail</th>
-                                <th>Status</th>
-                                <th></th>
+                                <th>Trạng thái</th>
+                                <th>Hành động</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach var="account" items="${listAccount}">
-                                <tr>
-                                    <td>${account.id}</td>
-                                    <td>${account.fullname}</td>
-                                    <td>${account.gender}</td>
-                                    <td>${account.role}</td>
-                                    <td>${account.student_id}</td>
-                                    <td>${account.address}</td>
-                                    <td>${account.bod}</td>
-                                    <td>${account.phone}</td>
-                                    <td>${account.email}</td>
-                                    <td>
-                                        <c:choose>
-                                            <c:when test="${account.status == 'active'}">
-                                  <span style="color: white;
-                                        padding: 5px 10px;
-                                        background-color: #9FD702;
-                                        font-weight: 500;
-                                        border-radius: 10px;
-                                        ">
-                                    Active
-                                  </span>
-                                            </c:when>
-                                            <c:otherwise>
-                                  <span style="color: white;
-                                        padding: 5px 10px;
-                                        background-color: #DE3202;
-                                        font-weight: 500;
-                                        border-radius: 10px;
-                                        ">Banned</span>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                <span class="flaticon-more-button-of-three-dots"></span>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item"
-                                                   href="${pageContext.request.contextPath}/manager-account?action=account-detail&id=${account.id}"><i
-                                                        class="fas fa-eye text-orange-peel"></i>View Detail</a>
-                                                <a class="dropdown-item"
-                                                   href="${pageContext.request.contextPath}/manager-account?action=account-update&id=${account.id}"><i
-                                                        class="fas fa-cogs text-dark-pastel-green"></i>Update</a>
-                                                <a class="dropdown-item" href="javascript:void(0);"
-                                                   onclick="confirmDelete(${account.id});"><i
-                                                        class="fas fa-times text-orange-red"></i>Delete</a>
+                            <c:forEach var="account" items="${listAccount}" varStatus="st">
+                                <c:if test="${accountRoles[account.id] eq 'head' or accountRoles[account.id] eq 'member'}">
+                                    <tr>
+                                        <td>${st.index+1}</td>
+                                        <td>${account.fullname}</td>
+                                        <td>${account.gender eq 'male'? "Nam" : account.gender eq 'female'? "Nữ":"Khác"}</td>
+                                        <td>${accountRoles[account.id] eq 'head'?"Trưởng ban":"Thành viên"}</td>
+                                        <td>${account.student_id}</td>
+                                        <td>${account.address}</td>
+                                        <td>
+                                            <fmt:formatDate value="${account.bod}" pattern="dd/MM/yyyy" />
+                                        </td>
+                                        <td>${account.phone}</td>
+                                        <td>${account.email}</td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${account.status == 'active'}">
+                                                                <span style="color: white;
+                                                                      padding: 5px 10px;
+                                                                      background-color: #9FD702;
+                                                                      font-weight: 500;
+                                                                      border-radius: 10px;
+                                                                      ">
+                                                                    Hoạt động
+                                                                </span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                                <span style="color: white;
+                                                                      padding: 5px 10px;
+                                                                      background-color: #DE3202;
+                                                                      font-weight: 500;
+                                                                      border-radius: 10px;
+                                                                      ">Dừng hoạt động</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                    <span class="flaticon-more-button-of-three-dots"></span>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a class="dropdown-item"
+                                                       href="${pageContext.request.contextPath}/manager-account?action=account-detail&id=${account.id}"><i
+                                                            class="fas fa-eye text-orange-peel"></i>Thông tin</a>
+                                                    <a class="dropdown-item" href="javascript:void(0)"
+                                                       onclick="confirmDelete(${account.id});"><i
+                                                            class="fas fa-times text-orange-red"></i>Xóa</a>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
+                                </c:if>
                             </c:forEach>
                             </tbody>
                         </table>
@@ -177,25 +179,35 @@
                                 <div class="modal-body">
                                     <p>Bạn có chắc chắn muốn xóa tài khoản này?</p>
                                     <form id="deleteAccountForm"
-                                          action="${pageContext.request.contextPath}/manager-account?action=account-delete"
+                                          action="${pageContext.request.contextPath}/managerMember?action=delete"
                                           method="post">
-                                        <input type="hidden" id="deleteAccountId" name="id" value="">
+                                        <input type="hidden" id="deleteAccountId" name="accountId" value="">
                                     </form>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                                    <button type="button" class="btn btn-danger"
-                                            onclick="document.getElementById('deleteAccountForm').submit();">Xóa</button>
+                                    <button type="button" class="btn btn-danger" onclick="submitDelete();">Xóa</button>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <c:if test="${not empty deleteMemberSuccess}">
+                            <div class="alert alert-success">
+                                    ${deleteMemberSuccess}
+                            </div>
+                        </c:if>
+                        <c:if test="${not empty error}">
+                            <div class="alert alert-danger">
+                                    ${error}
+                            </div>
+                        </c:if>
                     </div>
                 </div>
             </div>
             <!-- Student Table Area End Here -->
 
             <!--Footer-->
-            <jsp:include page="../common/footer.jsp"></jsp:include>
         </div>
     </div>
     <!-- Page Area End Here -->
@@ -223,60 +235,12 @@
         document.getElementById('deleteAccountId').value = accountId;
         $('#deleteConfirmModal').modal('show');
     }
+
+    function submitDelete() {
+        document.getElementById('deleteAccountForm').submit();
+    }
 </script>
 
-<!--Thông báo delete success-->
-<c:if test="${deleteSuccess == true}">
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            iziToast.success({
-                title: "Thông báo",
-                message: "${message}",
-                position: 'topRight',
-                timeout: 5000,
-                backgroundColor:"#d4edda"
-            });
-        });
-    </script>
-    <%
-        session.removeAttribute("deleteSuccess");
-        session.removeAttribute("message");
-    %>
-</c:if>
-<!--Thông báo add success-->
-<c:if test="${addSuccess == true}">
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            iziToast.success({
-                title: "Thông báo",
-                message: "${message}",
-                position: 'topRight',
-                timeout: 5000,
-            });
-        });
-    </script>
-    <%
-        session.removeAttribute("addSuccess");
-        session.removeAttribute("message");
-    %>
-</c:if>
-<!--Thông báo add failed-->
-<c:if test="${addSuccess == false}">
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            iziToast.error({
-                title: "Thông báo",
-                message: "${message}",
-                position: 'topRight',
-                timeout: 5000,
-            });
-        });
-    </script>
-    <%
-        session.removeAttribute("addSuccess");
-        session.removeAttribute("message");
-    %>
-</c:if>
 
 <!-- Mirrored from www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/all-student.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 20 Sep 2025 14:36:13 GMT -->
 

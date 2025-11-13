@@ -3,7 +3,9 @@ package com.mycompany.swp391.controller.authen;
 
 import com.mycompany.swp391.dal.implement.AccountDAO;
 import com.mycompany.swp391.entity.Account;
-import com.mycompany.swp391.util.SendEmail;
+
+import com.mycompany.swp391.utils.EmailUtils;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -73,7 +75,11 @@ public class RegisterAccount extends HttpServlet {
                         "Nhấn vào liên kết dưới đây để xác nhận tài khoản của bạn:<br>" +
                         "<a href='" + confirmLink + "'>" + confirmLink + "</a><br><br>" +
                         "Nếu bạn không đăng ký tài khoản, vui lòng bỏ qua email này.";
-                SendEmail.sendEmail(email, subject, body, true, "Hệ thống Quản Lý CLB");
+                try {
+                    EmailUtils.sendMail(email, subject, body);
+                } catch (MessagingException e) {
+                    throw new RuntimeException(e);
+                }
                 req.setAttribute("success", "Đăng ký thành công! Vui lòng kiểm tra email để xác nhận tài khoản");
                 req.getRequestDispatcher("view/guest/authen/login.jsp").forward(req, resp);
             }

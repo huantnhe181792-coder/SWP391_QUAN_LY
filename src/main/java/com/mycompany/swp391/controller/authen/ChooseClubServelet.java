@@ -5,11 +5,9 @@
 package com.mycompany.swp391.controller.authen;
 
 
-
 import com.mycompany.swp391.config.GlobalConfig;
 import com.mycompany.swp391.dal.implement.AccountClubDAO;
 import com.mycompany.swp391.dal.implement.ClubDAO;
-
 import com.mycompany.swp391.entity.Account;
 import com.mycompany.swp391.entity.AccountClub;
 import jakarta.servlet.ServletException;
@@ -19,8 +17,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
-
 /**
  *
  * @author Dell
@@ -33,24 +29,24 @@ public class ChooseClubServelet extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
+          throws ServletException, IOException {
   }
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
+          throws ServletException, IOException {
     HttpSession session = request.getSession();
     // lấy account trên session
     Account accountSession = (Account) session.getAttribute(GlobalConfig.SESSION_ACCOUNT);
     Integer accountID = accountSession.getId();
     // lấy clubID
-    Integer clubID = request.getParameter("choose_club") != null ? 
+    Integer clubID = request.getParameter("choose_club") != null ?
             Integer.parseInt(request.getParameter("choose_club")) : 0;
     AccountClub accountClub = null;
     //Neu clubID != 0 => da tham gia CLB
-    //Neu = 0 thi dang la user
+    //Neu = 0 thi chua tham gia
     if(clubID != 0){
-        accountClub = accountClubDao.findByAccountIdAndClubId(accountID, clubID);
+      accountClub = accountClubDao.findByAccountIdAndClubId(accountID, clubID);
     }
     else{
         accountClub = accountClubDao.findByAccountId(accountID).get(0);
@@ -59,7 +55,7 @@ public class ChooseClubServelet extends HttpServlet {
     session.setAttribute(GlobalConfig.SESSION_ACCOUNT_CLUB, accountClub);
     request.setAttribute("listClub", clubDao.findAll());
     request.getRequestDispatcher("view/guest/homePage.jsp").forward(request, response);
-            
+
   }
 
 }
